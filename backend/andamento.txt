@@ -1,0 +1,19 @@
+20/08 
+    - Excluir Modal de detalhamento de transações - #Feito
+    - Melhorar legibilidade do código - #Feito
+    - tratar os alerts/erros - padronizar - #Feito
+    - Implementar documentação com Swagger - #Feito
+
+    - Melhorar os placeholders de inclusão de transação e membros
+    - Verificar/Editar comentários
+
+    - Criar arquivos README para o back e o front, com instruções de uso/instalação
+    - Estruturar os repositórios no Git
+    - Vídeo de apresentação
+    - Revisar se todos os requisitos foram atendidos
+
+    - Deploy
+
+
+    link de acesso documentação Swagger: http://localhost:5000/apidocs
+    http://localhost:5000/apidocs/#/

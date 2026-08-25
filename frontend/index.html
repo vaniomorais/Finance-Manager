@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Finance Manager</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <!-- TELA PRINCIPAL -->
+        <div class="container">
+            <div class="header">
+                <small class="header-subtitle">PERSONAL & FAMILY</small>
+                <h1>Finance<br /><span>Manager</span></h1>
+            </div>
+
+            <div class="main-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="no-margin">Household Members</h3>
+                        <small id="member-count" class="user-meta"
+                            >Carregando...</small
+                        >
+                    </div>
+                    <button class="btn-add" onclick="openAddMemberModal()">
+                        + Add Member
+                    </button>
+                </div>
+                <div class="user-list" id="users-container"></div>
+            </div>
+        </div>
+
+        <!-- 1º MODAL: LISTA DE TRANSAÇÕES -->
+        <div id="transaction-modal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header-section">
+                    <div class="modal-top">
+                        <div class="flex-center">
+                            <div id="modal-avatar" class="avatar"></div>
+                            <div>
+                                <h3 id="modal-user-name" class="no-margin">
+                                    Nome
+                                </h3>
+                                <small id="modal-tx-count" class="user-meta"
+                                    >0 transactions</small
+                                >
+                            </div>
+                        </div>
+                        <button class="btn-close" onclick="closeModal()">
+                            ×
+                        </button>
+                    </div>
+
+                    <div class="summary-boxes">
+                        <div class="summary-box summary-box-income">
+                            <small>INCOME</small>
+                            <span id="modal-income" class="balance-positive"
+                                >$0.00</span
+                            >
+                        </div>
+                        <div class="summary-box summary-box-expense">
+                            <small>EXPENSES</small>
+                            <span id="modal-expenses" class="balance-negative"
+                                >$0.00</span
+                            >
+                        </div>
+                        <div class="summary-box summary-box-balance">
+                            <small>BALANCE</small>
+                            <span id="modal-balance">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tx-list-header">
+                    <h4 class="no-margin">Transactions</h4>
+                    <button
+                        class="btn-add btn-add-small"
+                        onclick="openAddTxModal()"
+                    >
+                        + Add Transaction
+                    </button>
+                </div>
+                <div id="modal-tx-list" class="tx-list"></div>
+            </div>
+        </div>
+
+        <!-- 2º MODAL: ADICIONAR NOVO MEMBRO -->
+        <div id="add-member-modal" class="modal-overlay modal-high-z">
+            <div class="details-modal-content">
+                <div class="details-header">
+                    <span>Add New Member</span>
+                    <button class="btn-close" onclick="closeAddMemberModal()">
+                        ×
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">MEMBER NAME</label>
+                    <input
+                        type="text"
+                        id="new-member-name"
+                        placeholder="e.g., John Doe"
+                        class="form-input"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">COLOUR</label>
+                    <div class="color-picker">
+                        <button
+                            class="color-option color-cyan selected"
+                            data-color="#81E6D9"
+                            onclick="selectColor('#81E6D9')"
+                        ></button>
+                        <button
+                            class="color-option color-red"
+                            data-color="#F8A5A5"
+                            onclick="selectColor('#F8A5A5')"
+                        ></button>
+                        <button
+                            class="color-option color-purple"
+                            data-color="#D8A8E8"
+                            onclick="selectColor('#D8A8E8')"
+                        ></button>
+                        <button
+                            class="color-option color-blue"
+                            data-color="#63B3ED"
+                            onclick="selectColor('#63B3ED')"
+                        ></button>
+                        <button
+                            class="color-option color-yellow"
+                            data-color="#F5D76E"
+                            onclick="selectColor('#F5D76E')"
+                        ></button>
+                        <button
+                            class="color-option color-green"
+                            data-color="#A8ECC8"
+                            onclick="selectColor('#A8ECC8')"
+                        ></button>
+                    </div>
+                </div>
+
+                <button
+                    class="btn-add btn-add-fullwidth"
+                    onclick="submitNewMember()"
+                >
+                    Save Member
+                </button>
+            </div>
+        </div>
+
+        <!-- 3º MODAL: ADICIONAR TRANSAÇÃO -->
+        <div id="add-tx-modal" class="modal-overlay modal-high-z">
+            <div class="details-modal-content">
+                <div class="details-header">
+                    <span>Add New Transaction</span>
+                    <button class="btn-close" onclick="closeAddTxModal()">
+                        ×
+                    </button>
+                </div>
+
+                <!-- Botões de Tipo de Transação -->
+                <div class="tx-type-buttons">
+                    <button
+                        class="tx-type-btn tx-type-btn-expense active"
+                        id="tx-type-expense-btn"
+                        onclick="selectTransactionType('expense')"
+                    >
+                        Expense
+                    </button>
+                    <button
+                        class="tx-type-btn tx-type-btn-income"
+                        id="tx-type-income-btn"
+                        onclick="selectTransactionType('income')"
+                    >
+                        Income
+                    </button>
+                </div>
+
+                <div class="form-group-small">
+                    <label class="form-label-small">DESCRIPTION</label>
+                    <input
+                        type="text"
+                        id="new-tx-title"
+                        placeholder="e.g., Monthly Salary"
+                        class="form-input-small"
+                    />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-column">
+                        <label class="form-label-small">AMOUNT (USD)</label>
+                        <input
+                            type="number"
+                            id="new-tx-amount"
+                            step="0.01"
+                            placeholder="0.00"
+                            class="form-input-small"
+                        />
+                    </div>
+                    <div class="form-column">
+                        <label class="form-label-small">DATE</label>
+                        <input
+                            type="date"
+                            id="new-tx-date"
+                            class="form-input-small"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label-small">CATEGORY</label>
+                    <select id="new-tx-category" class="form-select">
+                        <option value="">Select a category</option>
+                        <option value="Food">Food</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Health">Health</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Education">Education</option>
+                        <option value="Insurance">Insurance</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Income">Income</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <input type="hidden" id="new-tx-type" value="expense" />
+
+                <button
+                    class="btn-add btn-add-fullwidth"
+                    onclick="submitNewTransaction()"
+                >
+                    Save Transaction
+                </button>
+            </div>
+        </div>
+
+        <!-- 4º MODAL: CONFIRMAÇÃO DE EXCLUSÃO -->
+        <div id="delete-confirmation-modal" class="modal-overlay modal-high-z">
+            <div class="delete-modal-content">
+                <div class="delete-modal-header">
+                    <span>Delete <span id="delete-item-type">Item</span>?</span>
+                    <button class="btn-close" onclick="closeDeleteModal()">
+                        ×
+                    </button>
+                </div>
+
+                <div class="delete-modal-message">
+                    <p>
+                        Delete <strong id="delete-item-name">Item Name</strong>
+                        <span id="delete-item-value"></span>? This cannot be
+                        undone.
+                    </p>
+                </div>
+
+                <div class="delete-modal-buttons">
+                    <button class="btn-cancel" onclick="closeDeleteModal()">
+                        Cancel
+                    </button>
+                    <button class="btn-delete" onclick="confirmDelete()">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5º MODAL: MENSAGEM DE ERRO -->
+        <div id="error-modal" class="modal-overlay modal-high-z">
+            <div class="error-modal-content">
+                <div class="error-modal-header">
+                    <span>Error!</span>
+                    <button class="btn-close" onclick="closeErrorModal()">
+                        ×
+                    </button>
+                </div>
+
+                <div class="error-modal-message">
+                    <p id="error-message">Error message.</p>
+                </div>
+
+                <div class="error-modal-buttons">
+                    <button class="btn-ok" onclick="closeErrorModal()">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>

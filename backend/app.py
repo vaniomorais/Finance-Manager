@@ -4,7 +4,7 @@ from datetime import datetime
 from models.models import db, User, Transaction
 from flasgger import Swagger
 from pydantic import ValidationError
-from schemas import UserCreate, UserResponse, TransactionCreate, TransactionResponse, TransactionSummary
+from schemas import UserCreate, TransactionCreate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finance.db'

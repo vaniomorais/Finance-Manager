@@ -26,7 +26,17 @@ def get_users():
         description: Lista de usuários com saldos
     """
     users = User.query.all()
-    return jsonify([user.to_dict() for user in users]), 200
+    users_data = []
+    
+    for user in users:
+        user_dict = user.to_dict()
+        # Calcula o saldo do usuário
+        income = sum(t.amount for t in user.transactions if t.type == 'income')
+        expenses = sum(t.amount for t in user.transactions if t.type == 'expense')
+        user_dict['balance'] = income - expenses
+        users_data.append(user_dict)
+    
+    return jsonify(users_data), 200
 
 
 @app.route('/users', methods=['POST'])
@@ -195,7 +205,7 @@ def create_transaction(user_id):
             amount=transaction_data.amount,
             type=transaction_data.type,
             category=transaction_data.category,
-            date=datetime.strptime(str(transaction_data.date), '%Y-%m-%d'),
+            date=transaction_data.date,
             user_id=user.id
         )
         

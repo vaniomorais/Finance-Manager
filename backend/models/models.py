@@ -1,11 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, timezone
-
-def calculate_balance(transactions):
-    """Calcula o saldo total baseado nas transações."""
-    income = sum(t.amount for t in transactions if t.type == 'income')
-    expenses = sum(t.amount for t in transactions if t.type == 'expense')
-    return income - expenses
+from datetime import datetime, timezone, date
 
 db = SQLAlchemy()
     
@@ -21,15 +15,12 @@ class User(db.Model):
     transactions = db.relationship('Transaction', backref='user', lazy=True, cascade="all, delete-orphan")
 
     def to_dict(self):
-        balance = calculate_balance(self.transactions)
-        
         return {
             'id': self.id,
             'name': self.name,
             'initials': self.initials,
             'avatar_color': self.avatar_color,
-            'transaction_count': len(self.transactions),
-            'balance': balance
+            'transaction_count': len(self.transactions)
         }
 
 
@@ -41,7 +32,7 @@ class Transaction(db.Model):
     amount = db.Column(db.Float, nullable=False)
     type = db.Column(db.String(10), nullable=False)  # 'income' ou 'expense'
     category = db.Column(db.String(50), nullable=False)
-    date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    date = db.Column(db.Date, default=date.today)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def to_dict(self):
@@ -51,6 +42,6 @@ class Transaction(db.Model):
             'amount': self.amount,
             'type': self.type,
             'category': self.category,
-            'date': self.date.strftime('%Y-%m-%d'),
+            'date': str(self.date),
             'user_id': self.user_id
         }

@@ -235,6 +235,84 @@ function closeModal() {
     fetchUsers();
 }
 
+async function openAllTransactionsModal() {
+    try {
+        const response = await fetch(`${API_URL}/transactions`);
+        if (!response.ok) throw new Error('Falha ao buscar transações');
+        
+        const data = await response.json();
+        updateAllTransactionsModal(data);
+        setModalDisplay('all-transactions-modal', true);
+    } catch (error) {
+        console.error("Erro ao abrir modal de todas as transações:", error);
+        showErrorModal('Error loading family transactions.');
+    }
+}
+
+function closeAllTransactionsModal() {
+    setModalDisplay('all-transactions-modal', false);
+}
+
+function updateAllTransactionsModal(data) {
+    // Atualiza contagem de transações
+    document.getElementById('all-tx-count').innerText = `${data.transaction_count} transactions`;
+    
+    // Atualiza summary boxes
+    document.getElementById('all-modal-income').innerText = `+$${formatCurrency(data.summary.income)}`;
+    document.getElementById('all-modal-expenses').innerText = `-$${formatCurrency(data.summary.expenses)}`;
+    
+    const balanceEl = document.getElementById('all-modal-balance');
+    const balanceClass = getBalanceClass(data.summary.balance);
+    const balancePrefix = getBalancePrefix(data.summary.balance);
+    balanceEl.innerText = `${balancePrefix}$${formatCurrency(data.summary.balance)}`;
+    balanceEl.className = balanceClass;
+    
+    // Atualiza cor de fundo do balance box
+    const balanceBox = document.querySelector('#all-transactions-modal .summary-box-balance');
+    balanceBox.classList.remove('balance-positive-bg', 'balance-negative-bg');
+    if (data.summary.balance >= 0) {
+        balanceBox.classList.add('balance-positive-bg');
+    } else {
+        balanceBox.classList.add('balance-negative-bg');
+    }
+    
+    // Atualiza lista de transações
+    updateAllTransactionList(data.transactions);
+}
+
+function updateAllTransactionList(transactions) {
+    const txContainer = document.getElementById('all-tx-list');
+    txContainer.innerHTML = '';
+    
+    transactions.forEach(tx => {
+        const row = createAllTransactionRow(tx);
+        txContainer.appendChild(row);
+    });
+}
+
+function createAllTransactionRow(tx) {
+    const isIncome = tx.type === TRANSACTION_TYPES.income;
+    const iconClass = getTransactionIconClass(tx.type);
+    const iconSymbol = getTransactionIcon(tx.type);
+    const amountClass = getBalanceClass(isIncome ? 1 : -1);
+    const amountPrefix = getTransactionPrefix(tx.type);
+    
+    const row = document.createElement('div');
+    row.className = 'tx-row';
+    row.innerHTML = `
+        <div class="tx-icon ${iconClass}">${iconSymbol}</div>
+        <div class="user-info">
+            <p class="user-name">${tx.title}</p>
+            <p class="user-meta">${tx.member_name} • ${tx.category} • ${tx.date}</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <span class="${amountClass}" style="font-weight:bold;">${amountPrefix}$${formatCurrency(tx.amount)}</span>
+        </div>
+    `;
+    
+    return row;
+}
+
 
 // GERENCIAMENTO DE EXCLUSÃO
 

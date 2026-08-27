@@ -77,6 +77,41 @@ def create_user():
         return jsonify({'error': str(e)}), 400
 
 
+@app.route('/transactions', methods=['GET'])
+def get_all_transactions():
+    """Retorna todas as transações do grupo familiar com resumo consolidado.
+    ---
+    tags:
+      - Transações
+    responses:
+      200:
+        description: Todas as transações com sumário consolidado
+    """
+    all_transactions = Transaction.query.all()
+    
+    income = sum(t.amount for t in all_transactions if t.type == 'income')
+    expenses = sum(t.amount for t in all_transactions if t.type == 'expense')
+    balance = income - expenses
+    
+    transactions_with_member = []
+    for t in all_transactions:
+        tx_dict = t.to_dict()
+        tx_dict['member_name'] = t.user.name
+        tx_dict['member_initials'] = t.user.initials
+        tx_dict['member_color'] = t.user.avatar_color
+        transactions_with_member.append(tx_dict)
+    
+    return jsonify({
+        'summary': {
+            'income': income,
+            'expenses': expenses,
+            'balance': balance
+        },
+        'transactions': transactions_with_member,
+        'transaction_count': len(all_transactions)
+    }), 200
+
+
 @app.route('/users/<int:user_id>/transactions', methods=['GET'])
 def get_user_transactions(user_id):
     """Retorna as transações e resumo financeiro de um usuário.

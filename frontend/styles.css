@@ -66,10 +66,17 @@ body {
 .card-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 20px;
     border-bottom: var(--border-width) solid var(--color-border);
     border-color: var(--color-primary);
+    gap: 20px;
+}
+
+.family-transactions {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
 }
 
 .btn-add {
@@ -386,6 +393,22 @@ body {
 .btn-add-small {
     font-size: 0.8rem;
     padding: 8px 12px;
+}
+
+.view-all {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+}
+
+.view-all:hover {
+    color: (var(--color-primary));
 }
 
 .modal-high-z {

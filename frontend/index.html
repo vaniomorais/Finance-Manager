@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <!-- TELA PRINCIPAL -->
+        <!-- Tela Principal -->
         <div class="container">
             <div class="header">
                 <small class="header-subtitle">PERSONAL & FAMILY</small>
@@ -22,15 +22,24 @@
                             >Carregando...</small
                         >
                     </div>
-                    <button class="btn-add" onclick="openAddMemberModal()">
-                        + Add Member
-                    </button>
+                    <div class="family-transactions">
+                        <h3
+                            class="view-all"
+                            onclick="openAllTransactionsModal()">
+                            |      Family Transactions
+                        </h3>
+                    </div>
+                    <div style="display: flex; gap: 10px">
+                        <button class="btn-add" onclick="openAddMemberModal()">
+                            + Add Member
+                        </button>
+                    </div>
                 </div>
                 <div class="user-list" id="users-container"></div>
             </div>
         </div>
 
-        <!-- 1º MODAL: LISTA DE TRANSAÇÕES -->
+        <!-- 1º Modal: Lista de Transações de um Membro -->
         <div id="transaction-modal" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header-section">
@@ -84,7 +93,55 @@
             </div>
         </div>
 
-        <!-- 2º MODAL: ADICIONAR NOVO MEMBRO -->
+        <!-- 1.5º Modal: Todas as Transações do Grupo Familiar -->
+        <div id="all-transactions-modal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header-section">
+                    <div class="modal-top">
+                        <div>
+                            <h3 class="no-margin">All Family Transactions</h3>
+                            <small id="all-tx-count" class="user-meta"
+                                >0 transactions</small
+                            >
+                        </div>
+                        <button
+                            class="btn-close"
+                            onclick="closeAllTransactionsModal()"
+                        >
+                            ×
+                        </button>
+                    </div>
+
+                    <div class="summary-boxes">
+                        <div class="summary-box summary-box-income">
+                            <small>INCOME</small>
+                            <span id="all-modal-income" class="balance-positive"
+                                >$0.00</span
+                            >
+                        </div>
+                        <div class="summary-box summary-box-expense">
+                            <small>EXPENSES</small>
+                            <span
+                                id="all-modal-expenses"
+                                class="balance-negative"
+                                >$0.00</span
+                            >
+                        </div>
+                        <div class="summary-box summary-box-balance">
+                            <small>BALANCE</small>
+                            <span id="all-modal-balance">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tx-list-header">
+                    <h4 class="no-margin">Transactions</h4>
+                </div>
+                <div id="all-tx-list" class="tx-list"></div>
+            </div>
+        </div>
+
+        <!-- 2º Modal: Adicionar Novo Membro -->
         <div id="add-member-modal" class="modal-overlay modal-high-z">
             <div class="details-modal-content">
                 <div class="details-header">
@@ -149,7 +206,7 @@
             </div>
         </div>
 
-        <!-- 3º MODAL: ADICIONAR TRANSAÇÃO -->
+        <!-- 3º Modal: Adicionar Nova Transação -->
         <div id="add-tx-modal" class="modal-overlay modal-high-z">
             <div class="details-modal-content">
                 <div class="details-header">
@@ -159,7 +216,6 @@
                     </button>
                 </div>
 
-                <!-- Botões de Tipo de Transação -->
                 <div class="tx-type-buttons">
                     <button
                         class="tx-type-btn tx-type-btn-expense active"
@@ -236,7 +292,7 @@
             </div>
         </div>
 
-        <!-- 4º MODAL: CONFIRMAÇÃO DE EXCLUSÃO -->
+        <!-- 4º Modal: Confirmação de Exclusão -->
         <div id="delete-confirmation-modal" class="modal-overlay modal-high-z">
             <div class="delete-modal-content">
                 <div class="delete-modal-header">
@@ -265,7 +321,7 @@
             </div>
         </div>
 
-        <!-- 5º MODAL: MENSAGEM DE ERRO -->
+        <!-- 5º Modal: Mensagem de Erro -->
         <div id="error-modal" class="modal-overlay modal-high-z">
             <div class="error-modal-content">
                 <div class="error-modal-header">

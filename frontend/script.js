@@ -1,7 +1,7 @@
+// URL Localhost
 let API_URL = 'http://127.0.0.1:5000';
 
 // CONSTANTES
-
 const BALANCE_CLASSES = {
     positive: 'balance-positive',
     negative: 'balance-negative'
@@ -29,7 +29,6 @@ const COLORS = {
 const COLOR_ARRAY = Object.values(COLORS);
 
 // ESTADO GLOBAL
-
 const state = {
     activeUserId: null,
     activeUserInitials: '',
@@ -46,7 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // FUNÇÕES HELPER
-
 function getBalanceClass(balance) {
     return balance >= 0 ? BALANCE_CLASSES.positive : BALANCE_CLASSES.negative;
 }
@@ -79,7 +77,6 @@ function setModalDisplay(elementId, show) {
 }
 
 // GERENCIAMENTO DE MODAIS E ERROS
-
 function showErrorModal(message) {
     document.getElementById('error-message').innerText = message;
     setModalDisplay('error-modal', true);
@@ -90,7 +87,6 @@ function closeErrorModal() {
 }
 
 // GERENCIAMENTO DE USUÁRIOS
-
 async function fetchUsers() {
     try {
         const response = await fetch(`${API_URL}/users`);
@@ -145,6 +141,7 @@ function createUserRow(user) {
     return row;
 }
 
+// Carrega Card Inicial com Lista de usuários
 async function openUserModal(userId, initials, avatarColor) {
     state.activeUserId = userId;
     state.activeUserInitials = initials;
@@ -180,7 +177,7 @@ function updateTransactionModal(data, initials, avatarColor) {
     balanceEl.innerText = `${balancePrefix}$${formatCurrency(data.summary.balance)}`;
     balanceEl.className = balanceClass;
     
-    // Atualiza cor de fundo do balance box
+    // Atualiza cor de fundo do sumary box para refletir o balanço
     const balanceBox = document.querySelector('.summary-box-balance');
     balanceBox.classList.remove('balance-positive-bg', 'balance-negative-bg');
     if (data.summary.balance >= 0) {
@@ -235,6 +232,7 @@ function closeModal() {
     fetchUsers();
 }
 
+// Carrega todas as transações
 async function openAllTransactionsModal() {
     try {
         const response = await fetch(`${API_URL}/transactions`);
@@ -267,7 +265,7 @@ function updateAllTransactionsModal(data) {
     balanceEl.innerText = `${balancePrefix}$${formatCurrency(data.summary.balance)}`;
     balanceEl.className = balanceClass;
     
-    // Atualiza cor de fundo do balance box
+    // Atualiza cor de fundo do sumary box para refletir o saldo
     const balanceBox = document.querySelector('#all-transactions-modal .summary-box-balance');
     balanceBox.classList.remove('balance-positive-bg', 'balance-negative-bg');
     if (data.summary.balance >= 0) {
@@ -315,7 +313,6 @@ function createAllTransactionRow(tx) {
 
 
 // GERENCIAMENTO DE EXCLUSÃO
-
 function openDeleteModal(event, itemName, itemValue, itemId, isTransaction) {
     event.stopPropagation();
     
@@ -367,8 +364,7 @@ async function confirmDelete() {
 }
 
 
-// GERENCIAMENTO DE MEMBROS
-
+// GERENCIAMENTO DE INCLUSÃO DE MEMBROS/USUÁRIOS
 function openAddMemberModal() {
     document.getElementById('new-member-name').value = '';
     state.selectedColor = COLOR_ARRAY[0]; // Seleciona a primeira cor como padrão
@@ -434,6 +430,7 @@ function highlightSelectedColor(color) {
     });
 }
 
+// Gera as Iniciais (avatar)
 function generateInitials(name) {
     const parts = name.split(' ');
     if (parts.length >= 2) {
@@ -443,7 +440,6 @@ function generateInitials(name) {
 }
 
 // GERENCIAMENTO DE TRANSAÇÕES
-
 function openAddTxModal() {
     document.getElementById('new-tx-title').value = '';
     document.getElementById('new-tx-amount').value = '';
@@ -451,7 +447,7 @@ function openAddTxModal() {
     document.getElementById('new-tx-type').value = TRANSACTION_TYPES.expense;
     document.getElementById('new-tx-date').value = getTodayDate();
     
-    // Reset type buttons to expense
+    // Botão expense selecionado por padrão
     selectTransactionType('expense');
     
     setModalDisplay('add-tx-modal', true);

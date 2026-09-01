@@ -4,11 +4,11 @@
     - tratar os alerts/erros - padronizar - #Feito
     - Implementar documentação com Swagger - #Feito
 
-    - Melhorar os placeholders de inclusão de transação e membros
-    - Verificar/Editar comentários
+    - Melhorar os placeholders de inclusão de transação e membros - Feito
+    - Verificar/Editar comentários - Feito
 
-    - Criar arquivos README para o back e o front, com instruções de uso/instalação
-    - Estruturar os repositórios no Git
+    - Criar arquivos README para o back e o front, com instruções de uso/instalação - Feito
+    - Estruturar os repositórios no Git - Feito
     - Vídeo de apresentação
     - Revisar se todos os requisitos foram atendidos
 

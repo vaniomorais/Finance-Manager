@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from datetime import datetime
 from models.models import db, User, Transaction
 from flasgger import Swagger
 from pydantic import ValidationError
@@ -107,8 +106,8 @@ def get_all_transactions():
     for t in all_transactions:
         tx_dict = t.to_dict()
         tx_dict['member_name'] = t.user.name
-        tx_dict['member_initials'] = t.user.initials
-        tx_dict['member_color'] = t.user.avatar_color
+        #tx_dict['member_initials'] = t.user.initials
+        #tx_dict['member_color'] = t.user.avatar_color
         transactions_with_member.append(tx_dict)
     
     return jsonify({

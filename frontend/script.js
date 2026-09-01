@@ -1,7 +1,11 @@
-// URL Localhost
+// Gerencia interface do usuário para gestão de membros e transações
+
+// Configuração da API
 let API_URL = 'http://127.0.0.1:5000';
 
+
 // CONSTANTES
+
 const BALANCE_CLASSES = {
     positive: 'balance-positive',
     negative: 'balance-negative'
@@ -28,7 +32,9 @@ const COLORS = {
 
 const COLOR_ARRAY = Object.values(COLORS);
 
+
 // ESTADO GLOBAL
+
 const state = {
     activeUserId: null,
     activeUserInitials: '',
@@ -40,35 +46,64 @@ const state = {
     }
 };
 
+// INICIALIZAÇÃO
+
 document.addEventListener("DOMContentLoaded", async () => {
     fetchUsers();
 });
 
-// FUNÇÕES HELPER
+// FUNÇÕES AUXILIARES - FORMATAÇÃO E CONVERSÃO
+
+// CSS para estilizar saldo (positivo/negativo)
 function getBalanceClass(balance) {
     return balance >= 0 ? BALANCE_CLASSES.positive : BALANCE_CLASSES.negative;
 }
 
+// Exibição sinal (+ ou -)
 function getBalancePrefix(balance) {
     return balance >= 0 ? '+' : '';
 }
 
+
+// Prefixo para transação baseado no tipo
 function getTransactionPrefix(type) {
     return type === TRANSACTION_TYPES.income ? '+' : '-';
 }
 
+// Ícone visual para o tipo de transação
 function getTransactionIcon(type) {
     return ICONS[type] || ICONS.expense;
 }
 
+// CSS do ícone para o tipo de transação
 function getTransactionIconClass(type) {
     return type === TRANSACTION_TYPES.income ? 'icon-income' : 'icon-expense';
 }
 
+// Formata valor em moeda para 2 casas decimais
 function formatCurrency(value) {
     return Math.abs(value).toFixed(2);
 }
 
+
+// Gera as iniciais do nome (usado para avatar)
+function generateInitials(name) {
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+}
+
+
+// Data atual
+function getTodayDate() {
+    return new Date().toISOString().split('T')[0];
+}
+
+// FUNÇÕES AUXILIARES - INTERFACE E MODAIS
+
+// Alterna visibilidade de um modal
 function setModalDisplay(elementId, show) {
     const element = document.getElementById(elementId);
     if (element) {
@@ -76,17 +111,49 @@ function setModalDisplay(elementId, show) {
     }
 }
 
-// GERENCIAMENTO DE MODAIS E ERROS
+
+// Atualiza e exibe modal de erro
 function showErrorModal(message) {
     document.getElementById('error-message').innerText = message;
     setModalDisplay('error-modal', true);
 }
 
+// Fecha modal de erro
 function closeErrorModal() {
     setModalDisplay('error-modal', false);
 }
 
+
+// Atualiza summary box (renda, despesas, saldo)
+function updateSummaryBox(summaryData, balanceElementId, incomeElementId, expenseElementId, containerSelector) {
+    const balanceEl = document.getElementById(balanceElementId);
+    const incomeEl = document.getElementById(incomeElementId);
+    const expenseEl = document.getElementById(expenseElementId);
+    
+    if (incomeEl) incomeEl.innerText = `+$${formatCurrency(summaryData.income)}`;
+    if (expenseEl) expenseEl.innerText = `-$${formatCurrency(summaryData.expenses)}`;
+    
+    if (balanceEl) {
+        const balanceClass = getBalanceClass(summaryData.balance);
+        const balancePrefix = getBalancePrefix(summaryData.balance);
+        balanceEl.innerText = `${balancePrefix}$${formatCurrency(summaryData.balance)}`;
+        balanceEl.className = balanceClass;
+    }
+    
+    const balanceBox = document.querySelector(containerSelector);
+    if (balanceBox) {
+        balanceBox.classList.remove('balance-positive-bg', 'balance-negative-bg');
+        if (summaryData.balance >= 0) {
+            balanceBox.classList.add('balance-positive-bg');
+        } else {
+            balanceBox.classList.add('balance-negative-bg');
+        }
+    }
+}
+
 // GERENCIAMENTO DE USUÁRIOS
+
+//Busca lista de usuários da API
 async function fetchUsers() {
     try {
         const response = await fetch(`${API_URL}/users`);
@@ -100,6 +167,7 @@ async function fetchUsers() {
     }
 }
 
+// Atualiza a lista de usuários na interface
 function updateUserList(users) {
     document.getElementById('member-count').innerText = `${users.length} members registered`;
     const container = document.getElementById('users-container');
@@ -111,6 +179,7 @@ function updateUserList(users) {
     });
 }
 
+// Cria e retorna elemento HTML com linha de usuário
 function createUserRow(user) {
     const row = document.createElement('div');
     row.className = 'user-row';
@@ -141,7 +210,9 @@ function createUserRow(user) {
     return row;
 }
 
-// Carrega Card Inicial com Lista de usuários
+// GERENCIAMENTO DE TRANSAÇÕES - MODAL DO USUÁRIO
+
+// Abre modal com dados e transações de um usuário específico
 async function openUserModal(userId, initials, avatarColor) {
     state.activeUserId = userId;
     state.activeUserInitials = initials;
@@ -152,7 +223,7 @@ async function openUserModal(userId, initials, avatarColor) {
         if (!response.ok) throw new Error('Falha ao buscar transações');
         
         const data = await response.json();
-        updateTransactionModal(data, initials, avatarColor);
+        updateUserTransactionModal(data, initials, avatarColor);
         setModalDisplay('transaction-modal', true);
     } catch (error) {
         console.error("Erro ao abrir modal:", error);
@@ -160,79 +231,31 @@ async function openUserModal(userId, initials, avatarColor) {
     }
 }
 
-function updateTransactionModal(data, initials, avatarColor) {
+// Atualiza conteúdo do modal de transações do usuário
+function updateUserTransactionModal(data, initials, avatarColor) {
     // Atualiza cabeçalho
     document.getElementById('modal-avatar').innerText = initials;
     document.getElementById('modal-avatar').style.backgroundColor = avatarColor;
     document.getElementById('modal-user-name').innerText = data.user;
     document.getElementById('modal-tx-count').innerText = `${data.transactions.length} transactions`;
     
-    // Atualiza summary boxes
-    document.getElementById('modal-income').innerText = `+$${formatCurrency(data.summary.income)}`;
-    document.getElementById('modal-expenses').innerText = `-$${formatCurrency(data.summary.expenses)}`;
-    
-    const balanceEl = document.getElementById('modal-balance');
-    const balanceClass = getBalanceClass(data.summary.balance);
-    const balancePrefix = getBalancePrefix(data.summary.balance);
-    balanceEl.innerText = `${balancePrefix}$${formatCurrency(data.summary.balance)}`;
-    balanceEl.className = balanceClass;
-    
-    // Atualiza cor de fundo do sumary box para refletir o balanço
-    const balanceBox = document.querySelector('.summary-box-balance');
-    balanceBox.classList.remove('balance-positive-bg', 'balance-negative-bg');
-    if (data.summary.balance >= 0) {
-        balanceBox.classList.add('balance-positive-bg');
-    } else {
-        balanceBox.classList.add('balance-negative-bg');
-    }
+    // Atualiza summary box (renda, despesas, saldo) com IDs específicos do modal do usuário
+    updateSummaryBox(data.summary, 'modal-balance', 'modal-income', 'modal-expenses', '.summary-box-balance');
     
     // Atualiza lista de transações
-    updateTransactionList(data.transactions);
+    updateTransactionListUI(data.transactions, 'modal-tx-list', false);
 }
 
-function updateTransactionList(transactions) {
-    const txContainer = document.getElementById('modal-tx-list');
-    txContainer.innerHTML = '';
-    
-    transactions.forEach(tx => {
-        const row = createTransactionRow(tx);
-        txContainer.appendChild(row);
-    });
-}
-
-function createTransactionRow(tx) {
-    const isIncome = tx.type === TRANSACTION_TYPES.income;
-    const iconClass = getTransactionIconClass(tx.type);
-    const iconSymbol = getTransactionIcon(tx.type);
-    const amountClass = getBalanceClass(isIncome ? 1 : -1);
-    const amountPrefix = getTransactionPrefix(tx.type);
-    
-    const row = document.createElement('div');
-    row.className = 'tx-row';
-    row.innerHTML = `
-        <div class="tx-icon ${iconClass}">${iconSymbol}</div>
-        <div class="user-info">
-            <p class="user-name">${tx.title}</p>
-            <p class="user-meta">${tx.category} • ${tx.date}</p>
-        </div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <span class="${amountClass}" style="font-weight:bold;">${amountPrefix}$${formatCurrency(tx.amount)}</span>
-            <div class="action-icons">
-                <span class="icon-btn icon-delete" onclick="openDeleteModal(event, '${tx.title}', '${amountPrefix}$${formatCurrency(tx.amount)}', ${tx.id}, true)">🗑️</span>
-            </div>
-        </div>
-    `;
-    
-    return row;
-}
-
+// Fecha modal de transações do usuário
 function closeModal() {
     setModalDisplay('transaction-modal', false);
     // Atualiza a lista de usuários para refletir mudanças de saldo
     fetchUsers();
 }
 
-// Carrega todas as transações
+// GERENCIAMENTO DE TRANSAÇÕES - TODAS AS TRANSAÇÕES
+
+// Abre modal com todas as transações de todos os usuários
 async function openAllTransactionsModal() {
     try {
         const response = await fetch(`${API_URL}/transactions`);
@@ -247,48 +270,38 @@ async function openAllTransactionsModal() {
     }
 }
 
+// Fecha modal de todas as transações
 function closeAllTransactionsModal() {
     setModalDisplay('all-transactions-modal', false);
 }
 
+// Atualiza conteúdo do modal com todas as transações
 function updateAllTransactionsModal(data) {
     // Atualiza contagem de transações
     document.getElementById('all-tx-count').innerText = `${data.transaction_count} transactions`;
     
-    // Atualiza summary boxes
-    document.getElementById('all-modal-income').innerText = `+$${formatCurrency(data.summary.income)}`;
-    document.getElementById('all-modal-expenses').innerText = `-$${formatCurrency(data.summary.expenses)}`;
-    
-    const balanceEl = document.getElementById('all-modal-balance');
-    const balanceClass = getBalanceClass(data.summary.balance);
-    const balancePrefix = getBalancePrefix(data.summary.balance);
-    balanceEl.innerText = `${balancePrefix}$${formatCurrency(data.summary.balance)}`;
-    balanceEl.className = balanceClass;
-    
-    // Atualiza cor de fundo do sumary box para refletir o saldo
-    const balanceBox = document.querySelector('#all-transactions-modal .summary-box-balance');
-    balanceBox.classList.remove('balance-positive-bg', 'balance-negative-bg');
-    if (data.summary.balance >= 0) {
-        balanceBox.classList.add('balance-positive-bg');
-    } else {
-        balanceBox.classList.add('balance-negative-bg');
-    }
+    // Atualiza summary box (renda, despesas, saldo) com IDs específicos do modal de todas as transações
+    updateSummaryBox(data.summary, 'all-modal-balance', 'all-modal-income', 'all-modal-expenses', '#all-transactions-modal .summary-box-balance');
     
     // Atualiza lista de transações
-    updateAllTransactionList(data.transactions);
+    updateTransactionListUI(data.transactions, 'all-tx-list', true);
 }
 
-function updateAllTransactionList(transactions) {
-    const txContainer = document.getElementById('all-tx-list');
+// FUNÇÕES AUXILIARES - RENDERIZAÇÃO DE TRANSAÇÕES
+
+function updateTransactionListUI(transactions, containerId, showMemberName = false) {
+    const txContainer = document.getElementById(containerId);
     txContainer.innerHTML = '';
     
     transactions.forEach(tx => {
-        const row = createAllTransactionRow(tx);
+        const row = createTransactionRowElement(tx, showMemberName);
         txContainer.appendChild(row);
     });
 }
 
-function createAllTransactionRow(tx) {
+
+// Cria elemento HTML com linha de transação
+function createTransactionRowElement(tx, showMemberName = false) {
     const isIncome = tx.type === TRANSACTION_TYPES.income;
     const iconClass = getTransactionIconClass(tx.type);
     const iconSymbol = getTransactionIcon(tx.type);
@@ -297,22 +310,32 @@ function createAllTransactionRow(tx) {
     
     const row = document.createElement('div');
     row.className = 'tx-row';
+    
+    // Monta metadata: categoria + data, ou membro + categoria + data
+    const metadata = showMemberName 
+        ? `${tx.member_name} • ${tx.category} • ${tx.date}`
+        : `${tx.category} • ${tx.date}`;
+    
     row.innerHTML = `
         <div class="tx-icon ${iconClass}">${iconSymbol}</div>
         <div class="user-info">
             <p class="user-name">${tx.title}</p>
-            <p class="user-meta">${tx.member_name} • ${tx.category} • ${tx.date}</p>
+            <p class="user-meta">${metadata}</p>
         </div>
         <div style="display: flex; align-items: center; gap: 20px;">
             <span class="${amountClass}" style="font-weight:bold;">${amountPrefix}$${formatCurrency(tx.amount)}</span>
+            ${showMemberName ? '' : `<div class="action-icons">
+                <span class="icon-btn icon-delete" onclick="openDeleteModal(event, '${tx.title}', '${amountPrefix}$${formatCurrency(tx.amount)}', ${tx.id}, true)">🗑️</span>
+            </div>`}
         </div>
     `;
     
     return row;
 }
 
-
 // GERENCIAMENTO DE EXCLUSÃO
+
+// Abre modal de confirmação para deletar usuário ou transação
 function openDeleteModal(event, itemName, itemValue, itemId, isTransaction) {
     event.stopPropagation();
     
@@ -330,10 +353,12 @@ function openDeleteModal(event, itemName, itemValue, itemId, isTransaction) {
     setModalDisplay('delete-confirmation-modal', true);
 }
 
+// Fecha modal de exclusão
 function closeDeleteModal() {
     setModalDisplay('delete-confirmation-modal', false);
 }
 
+// Confirma e executa a deleção de usuário ou transação
 async function confirmDelete() {
     const { id, isTransaction } = state.deleteItem;
     
@@ -363,8 +388,9 @@ async function confirmDelete() {
     }
 }
 
+// GERENCIAMENTO DE ADIÇÃO DE MEMBROS/USUÁRIOS
 
-// GERENCIAMENTO DE INCLUSÃO DE MEMBROS/USUÁRIOS
+// Abre modal para adicionar novo membro
 function openAddMemberModal() {
     document.getElementById('new-member-name').value = '';
     state.selectedColor = COLOR_ARRAY[0]; // Seleciona a primeira cor como padrão
@@ -372,10 +398,12 @@ function openAddMemberModal() {
     setModalDisplay('add-member-modal', true);
 }
 
+// Fecha modal de adição de membro
 function closeAddMemberModal() {
     setModalDisplay('add-member-modal', false);
 }
 
+// Envia novo membro para a API
 async function submitNewMember() {
     const nameInput = document.getElementById('new-member-name').value.trim();
     
@@ -414,11 +442,13 @@ async function submitNewMember() {
     }
 }
 
+// Define cor selecionada e atualiza UI
 function selectColor(color) {
     state.selectedColor = color;
     highlightSelectedColor(color);
 }
 
+// Destaca visualmente a cor selecionada
 function highlightSelectedColor(color) {
     const colorButtons = document.querySelectorAll('.color-option');
     colorButtons.forEach(btn => {
@@ -430,16 +460,9 @@ function highlightSelectedColor(color) {
     });
 }
 
-// Gera as Iniciais (avatar)
-function generateInitials(name) {
-    const parts = name.split(' ');
-    if (parts.length >= 2) {
-        return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return name.substring(0, 2).toUpperCase();
-}
+// GERENCIAMENTO DE ADIÇÃO DE TRANSAÇÕES
 
-// GERENCIAMENTO DE TRANSAÇÕES
+// Abre modal para adicionar nova transação
 function openAddTxModal() {
     document.getElementById('new-tx-title').value = '';
     document.getElementById('new-tx-amount').value = '';
@@ -453,14 +476,12 @@ function openAddTxModal() {
     setModalDisplay('add-tx-modal', true);
 }
 
+// Fecha modal de adição de transação
 function closeAddTxModal() {
     setModalDisplay('add-tx-modal', false);
 }
 
-function getTodayDate() {
-    return new Date().toISOString().split('T')[0];
-}
-
+// Define tipo de transação selecionado e atualiza UI
 function selectTransactionType(type) {
     document.getElementById('new-tx-type').value = type;
     
@@ -476,6 +497,7 @@ function selectTransactionType(type) {
     }
 }
 
+// Envia nova transação para a API
 async function submitNewTransaction() {
     const title = document.getElementById('new-tx-title').value.trim();
     const amount = document.getElementById('new-tx-amount').value;

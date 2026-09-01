@@ -44,25 +44,10 @@ cd finance-manager/frontend
 
 **Opção 1: Usando Python (recomendado)**
 ```bash
-# Python 3.8+
-python -m http.server 8000
-
-# Ou use o serve.py incluído
-python serve.py
+python app.py
 ```
 
-**Opção 2: abrindo o arquivo index.html**
-
-**Opção 3: Usando Live Server (VS Code)**
-- Instale a extensão "Live Server"
-- Clique com direito em `index.html` e selecione "Open with Live Server"
-
-3. **Acesse a aplicação**
-
-Abra seu navegador e acesse:
-```
-http://localhost:8000
-```
+**Opção 2: abrindo o arquivo 'index.html'**
 
 ## 🚀 Como Usar
 
@@ -72,11 +57,10 @@ http://localhost:8000
 - Remova membros clicando no botão de deletar
 
 ### 2. Registrar Transações
-- Clique em "New Transaction" para abrir o modal de criação
-- Selecione o tipo (Receita ou Despesa)
-- Insira o valor e descrição
-- Selecione o membro responsável
-- Clique em "Save" para registrar
+- Clique no nome de um membro familiar e em "Add Transaction" para abrir o modal "New Transaction"
+- Selecione o tipo (Expense ou Income)
+- Insira description, amount, date e select category
+- Clique em "Save Transaction" para registrar
 
 ### 3. Visualizar Transações
 - Clique em "Family Transactions" para ver todas as transações do grupo familiar
@@ -94,7 +78,6 @@ frontend/
 ├── index.html          # Página principal
 ├── styles.css          # Estilos da aplicação
 ├── script.js           # Lógica e interatividade
-├── serve.py            # Servidor Python simples
 └── README.md           # Este arquivo
 ```
 

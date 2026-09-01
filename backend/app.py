@@ -94,7 +94,7 @@ def get_all_transactions():
       - Transações
     responses:
       200:
-        description: Todas as transações com sumário consolidado
+        description: Todas as transações com balanço financeiro do grupo familiar
     """
     all_transactions = Transaction.query.all()
     

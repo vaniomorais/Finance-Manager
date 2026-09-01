@@ -6,7 +6,7 @@ API REST para gerenciamento de finanças pessoais e familiares.
 
 O Finance Manager Backend é uma aplicação desenvolvida em Flask que fornece endpoints para gerenciar usuários, transações financeiras (receitas e despesas) e cálculo de saldos. A API utiliza SQLite para persistência de dados e Swagger para documentação interativa.
 
-## 🎯 Métodos e Funcionalidades
+## 🎯 Funcionalidades
 
 - ✅ Cadastra um novo usuário/membro da familia.
 - ✅ Cadastro de transações (receitas e despesas)
@@ -82,7 +82,7 @@ Ali você encontrará toda a documentação interativa dos endpoints e poderá t
 #### Transações
 
 - **GET** `/transactions` - Listar todas as transações
-- **GET** `/transactions` - Listar as transações por ID de membro familiar
+- **GET** `/transactions` - Listar as transações por ID de usuário
 - **POST** `/transactions` - Criar nova transação
 - **DELETE** `/transactions/{transaction_id}` - Deletar transação
 

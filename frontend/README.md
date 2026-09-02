@@ -133,10 +133,3 @@ O frontend se comunica com o backend através da API REST. Certifique-se de que:
 Desenvolvido como parte do MVP da sprint 01 da Pós-Graduação em Desenvolvimento Full Stack da PUC Rio.
 
 **Último update:** setembro de 2026
-
-## Prints
-![alt text](image.png)
-
-![alt text](image-3.png)
-
-![alt text](image-4.png)

@@ -1,35 +1,44 @@
-/* =========================================
-           CSS VARIABLES (CORES E TAMANHOS)
-    ========================================= */
 :root {
     --color-primary: #1A1A2E;
     --color-secondary: #4FD1C5;
+    --color-white: white;
+
     --color-background: #FFF8F0;
     --color-card-bg: #F8F5F0;
-    --color-white: white;
-    --color-border: #E2E8F0;
-    --color-text-muted: #718096;
+    --color-input-bg: #FDFBF7;
+
     --color-positive: #38A169;
     --color-negative: #E53E3E;
     --color-positive-light: #E6FFFA;
     --color-negative-light: #FFF5F5;
+    --color-text-muted: #718096;
+    --color-text-dark: #4A5568;
+
     --color-cyan: #81E6D9;
     --color-red: #F56565;
     --color-purple: #B794F4;
     --color-orange: #F6AD55;
     --color-blue: #63B3ED;
 
+    --color-border: #E2E8F0;
+    --color-border-light: #F7FAFC;
+    --color-shadow-dark: rgba(0, 0, 0, 0.3);
+    --color-shadow-light: rgba(0, 0, 0, 0.1);
+
     --border-radius-sm: 8px;
     --border-radius-md: 12px;
     --border-radius-lg: 15px;
     --border-width: 2px;
-    --box-shadow: 5px 5px 0px var(--color-primary);
 
+    --box-shadow: 5px 5px 0px var(--color-primary);
+    --box-shadow-hover: 0 2px 8px var(--color-shadow-light);
+
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 15px;
+    --spacing-xl: 20px;
 }
 
-/* =========================================
-           CSS BASE (Tela Principal)
-    ========================================= */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--color-background);
@@ -52,6 +61,15 @@ body {
 
 .header h1 span {
     color: var(--color-secondary);
+}
+
+.header-subtitle {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
 }
 
 .main-card {
@@ -171,11 +189,10 @@ body {
 
 .icon-delete:hover {
     color: var(--color-negative);
-    background-color: #f1eff0;
+    background-color: var(--color-border-light);
     border-radius: 20px;
 }
 
-/* Utilitários */
 .no-margin {
     margin: 0;
 }
@@ -183,12 +200,47 @@ body {
 .flex-center {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--spacing-md);
 }
 
-/* =========================================
-           CSS DOS MODAIS
-    ========================================= */
+.modal-content-base {
+    background-color: var(--color-white);
+    width: 400px;
+    padding: var(--spacing-xl);
+    border: var(--border-width) solid var(--color-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+}
+
+.modal-header-base {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    border-bottom: var(--border-width) solid var(--color-border);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.modal-message-base {
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-xl);
+    text-align: left;
+}
+
+.modal-message-base p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-dark);
+    line-height: 1.5;
+}
+
+.modal-message-base strong {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
 .modal-overlay {
     display: none;
     position: fixed;
@@ -321,11 +373,10 @@ body {
     color: var(--color-negative);
 }
 
-/* Estilos reutilizáveis para Modais de Formulário */
 .details-modal-content {
     background-color: var(--color-white);
     width: 400px;
-    padding: 20px;
+    padding: var(--spacing-xl);
     border: var(--border-width) solid var(--color-primary);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow);
@@ -335,55 +386,57 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
     border-bottom: var(--border-width) solid var(--color-border);
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-xl);
 }
 
 .form-group-small {
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-lg);
 }
 
 .form-label,
 .form-label-small {
     font-size: 0.6rem;
     font-weight: bold;
-    color: #718096;
+    color: var(--color-text-muted);
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-md);
 }
 
 .form-label-small {
-    margin-bottom: 5px;
+    margin-bottom: var(--spacing-sm);
 }
 
 .form-input,
 .form-input-small {
     width: 100%;
-    padding: 10px;
-    border: 2px solid #E2E8F0;
-    border-radius: 8px;
+    padding: var(--spacing-md);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--border-radius-sm);
     box-sizing: border-box;
     font-family: inherit;
-    background-color: var(--color-background);
+    background-color: var(--color-input-bg);
 }
 
 .form-input {
-    padding: 12px;
+    padding: var(--spacing-lg);
     font-size: 1rem;
 }
 
 .form-select {
     width: 100%;
-    padding: 10px;
-    border: 2px solid #E2E8F0;
-    border-radius: 8px;
+    padding: var(--spacing-md);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--border-radius-sm);
     box-sizing: border-box;
-    background-color: #FDFBF7;
+    background-color: var(--color-input-bg);
 }
 
 .btn-add-fullwidth {
@@ -392,7 +445,7 @@ body {
 
 .btn-add-small {
     font-size: 0.8rem;
-    padding: 8px 12px;
+    padding: var(--spacing-sm) var(--spacing-md);
 }
 
 .view-all {
@@ -405,10 +458,11 @@ body {
     display: flex;
     align-items: center;
     margin-top: 3px;
+    transition: color 0.2s;
 }
 
 .view-all:hover {
-    color: (var(--color-primary));
+    color: var(--color-primary);
 }
 
 .modal-high-z {
@@ -459,19 +513,16 @@ body {
     flex: 1;
 }
 
-/* =========================================
-           BOTÕES DE TIPO DE TRANSAÇÃO
-    ========================================= */
 .tx-type-buttons {
     display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
 }
 
 .tx-type-btn {
     flex: 1;
-    padding: 12px 16px;
-    border: 2px solid var(--color-border);
+    padding: var(--spacing-lg) 16px;
+    border: var(--border-width) solid var(--color-border);
     border-radius: var(--border-radius-md);
     background-color: var(--color-white);
     color: var(--color-primary);
@@ -483,30 +534,27 @@ body {
 
 .tx-type-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow-hover);
 }
 
 .tx-type-btn-expense.active {
     background-color: var(--color-negative);
     color: var(--color-white);
     border-color: var(--color-primary);
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.9);
+    box-shadow: 2px 2px 0px var(--color-shadow-dark);
 }
 
 .tx-type-btn-income.active {
     background-color: var(--color-secondary);
     color: var(--color-white);
     border-color: var(--color-primary);
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.9);
+    box-shadow: 2px 2px 0px var(--color-shadow-dark);
 }
 
-/* =========================================
-           MODAL DE CONFIRMAÇÃO DE EXCLUSÃO
-    ========================================= */
 .delete-modal-content {
     background-color: var(--color-white);
     width: 400px;
-    padding: 20px;
+    padding: var(--spacing-xl);
     border: var(--border-width) solid var(--color-primary);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow);
@@ -516,23 +564,23 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
     border-bottom: var(--border-width) solid var(--color-border);
     font-weight: bold;
     font-size: 1.1rem;
 }
 
 .delete-modal-message {
-    padding: 15px 0;
-    margin-bottom: 20px;
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-xl);
     text-align: left;
 }
 
 .delete-modal-message p {
     margin: 0;
     font-size: 0.95rem;
-    color: #4A5568;
+    color: var(--color-text-dark);
     line-height: 1.5;
 }
 
@@ -543,7 +591,7 @@ body {
 
 .delete-modal-buttons {
     display: flex;
-    gap: 12px;
+    gap: var(--spacing-md);
     justify-content: center;
 }
 
@@ -561,7 +609,7 @@ body {
 }
 
 .btn-cancel:hover {
-    background-color: #F7FAFC;
+    background-color: var(--color-border-light);
 }
 
 .btn-delete {
@@ -581,19 +629,16 @@ body {
     background-color: #C53030;
 }
 
-/* =========================================
-           COLOR PICKER
-    ========================================= */
 .color-picker {
     display: flex;
-    gap: 12px;
+    gap: var(--spacing-md);
     flex-wrap: wrap;
 }
 
 .color-option {
     width: 45px;
     height: 45px;
-    border: 0.5px solid #E2E8F0;
+    border: 0.5px solid var(--color-border);
     border-radius: var(--border-radius-md);
     cursor: pointer;
     transition: all 0.2s;
@@ -601,7 +646,7 @@ body {
 
 .color-option:hover {
     transform: scale(1.08);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--box-shadow-hover);
 }
 
 .color-option.selected {
@@ -609,7 +654,6 @@ body {
     box-shadow: 0 0 0 0.1px var(--color-white), 0 0 0 1.1px var(--color-primary);
 }
 
-/* Color options */
 .color-option.color-cyan {
     background-color: #81E6D9;
 }
@@ -634,13 +678,10 @@ body {
     background-color: #A8ECC8;
 }
 
-/* =========================================
-           ERROR MODAL
-    ========================================= */
 .error-modal-content {
     background-color: var(--color-white);
     width: 400px;
-    padding: 20px;
+    padding: var(--spacing-xl);
     border: var(--border-width) solid var(--color-primary);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow);
@@ -650,8 +691,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
     border-bottom: var(--border-width) solid var(--color-border);
     font-weight: bold;
     font-size: 1.1rem;
@@ -659,21 +700,21 @@ body {
 }
 
 .error-modal-message {
-    padding: 15px 0;
-    margin-bottom: 20px;
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-xl);
     text-align: left;
 }
 
 .error-modal-message p {
     margin: 0;
     font-size: 0.95rem;
-    color: #4A5568;
+    color: var(--color-text-dark);
     line-height: 1.5;
 }
 
 .error-modal-buttons {
     display: flex;
-    gap: 12px;
+    gap: var(--spacing-md);
     justify-content: center;
 }
 

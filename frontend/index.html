@@ -3,11 +3,15 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Gerenciador de finanças pessoal e familiar para controlar despesas e receitas"
+        />
         <title>Finance Manager</title>
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <!-- Tela Principal -->
+        <!-- MAIN SCREEN - USERS LIST-->
         <div class="container">
             <div class="header">
                 <small class="header-subtitle">PERSONAL & FAMILY</small>
@@ -25,21 +29,27 @@
                     <div class="family-transactions">
                         <h3
                             class="view-all"
-                            onclick="openAllTransactionsModal()">
-                            |      Family Transactions
+                            onclick="openAllTransactionsModal()"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Ver todas as transações familiares"
+                        >
+                            | Family Transactions
                         </h3>
                     </div>
-                    <div style="display: flex; gap: 10px">
-                        <button class="btn-add" onclick="openAddMemberModal()">
-                            + Add Member
-                        </button>
-                    </div>
+                    <button
+                        class="btn-add"
+                        onclick="openAddMemberModal()"
+                        aria-label="Adicionar novo membro"
+                    >
+                        + Add Member
+                    </button>
                 </div>
                 <div class="user-list" id="users-container"></div>
             </div>
         </div>
 
-        <!-- 1º Modal: Lista de Transações de um Membro -->
+        <!-- MODAL 1: USER TRANSACTIONS LIST -->
         <div id="transaction-modal" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header-section">
@@ -55,7 +65,11 @@
                                 >
                             </div>
                         </div>
-                        <button class="btn-close" onclick="closeModal()">
+                        <button
+                            class="btn-close"
+                            onclick="closeModal()"
+                            aria-label="Fechar modal"
+                        >
                             ×
                         </button>
                     </div>
@@ -85,6 +99,7 @@
                     <button
                         class="btn-add btn-add-small"
                         onclick="openAddTxModal()"
+                        aria-label="Adicionar nova transação"
                     >
                         + Add Transaction
                     </button>
@@ -93,7 +108,7 @@
             </div>
         </div>
 
-        <!-- 1.5º Modal: Todas as Transações do Grupo Familiar -->
+        <!-- MODAL 2: ALL FAMILY TRANSACTIONS -->
         <div id="all-transactions-modal" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header-section">
@@ -107,6 +122,7 @@
                         <button
                             class="btn-close"
                             onclick="closeAllTransactionsModal()"
+                            aria-label="Fechar modal"
                         >
                             ×
                         </button>
@@ -141,23 +157,31 @@
             </div>
         </div>
 
-        <!-- 2º Modal: Adicionar Novo Membro -->
+        <!-- MODAL 3: ADD NEW MEMBER -->
         <div id="add-member-modal" class="modal-overlay modal-high-z">
             <div class="details-modal-content">
                 <div class="details-header">
                     <span>Add New Member</span>
-                    <button class="btn-close" onclick="closeAddMemberModal()">
+                    <button
+                        class="btn-close"
+                        onclick="closeAddMemberModal()"
+                        aria-label="Fechar modal"
+                    >
                         ×
                     </button>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">MEMBER NAME:</label>
+                    <label class="form-label" for="new-member-name"
+                        >MEMBER NAME:</label
+                    >
                     <input
                         type="text"
                         id="new-member-name"
                         placeholder="e.g., John Stuart"
                         class="form-input"
+                        required
+                        aria-label="Nome do novo membro"
                     />
                 </div>
 
@@ -168,31 +192,43 @@
                             class="color-option color-cyan selected"
                             data-color="#81E6D9"
                             onclick="selectColor('#81E6D9')"
+                            aria-label="Selecionar cor ciano"
+                            title="Cyan"
                         ></button>
                         <button
                             class="color-option color-red"
                             data-color="#F8A5A5"
                             onclick="selectColor('#F8A5A5')"
+                            aria-label="Selecionar cor vermelha"
+                            title="Red"
                         ></button>
                         <button
                             class="color-option color-purple"
                             data-color="#D8A8E8"
                             onclick="selectColor('#D8A8E8')"
+                            aria-label="Selecionar cor roxa"
+                            title="Purple"
                         ></button>
                         <button
                             class="color-option color-blue"
                             data-color="#63B3ED"
                             onclick="selectColor('#63B3ED')"
+                            aria-label="Selecionar cor azul"
+                            title="Blue"
                         ></button>
                         <button
                             class="color-option color-yellow"
                             data-color="#F5D76E"
                             onclick="selectColor('#F5D76E')"
+                            aria-label="Selecionar cor amarela"
+                            title="Yellow"
                         ></button>
                         <button
                             class="color-option color-green"
                             data-color="#A8ECC8"
                             onclick="selectColor('#A8ECC8')"
+                            aria-label="Selecionar cor verde"
+                            title="Green"
                         ></button>
                     </div>
                 </div>
@@ -200,18 +236,23 @@
                 <button
                     class="btn-add btn-add-fullwidth"
                     onclick="submitNewMember()"
+                    aria-label="Salvar novo membro"
                 >
                     Save Member
                 </button>
             </div>
         </div>
 
-        <!-- 3º Modal: Adicionar Nova Transação -->
+        <!-- MODAL 4: ADD NEW TRANSACTION-->
         <div id="add-tx-modal" class="modal-overlay modal-high-z">
             <div class="details-modal-content">
                 <div class="details-header">
                     <span>Add New Transaction</span>
-                    <button class="btn-close" onclick="closeAddTxModal()">
+                    <button
+                        class="btn-close"
+                        onclick="closeAddTxModal()"
+                        aria-label="Fechar modal"
+                    >
                         ×
                     </button>
                 </div>
@@ -221,6 +262,7 @@
                         class="tx-type-btn tx-type-btn-expense active"
                         id="tx-type-expense-btn"
                         onclick="selectTransactionType('expense')"
+                        aria-label="Tipo de transação: Despesa"
                     >
                         Expense
                     </button>
@@ -228,45 +270,66 @@
                         class="tx-type-btn tx-type-btn-income"
                         id="tx-type-income-btn"
                         onclick="selectTransactionType('income')"
+                        aria-label="Tipo de transação: Renda"
                     >
                         Income
                     </button>
                 </div>
 
                 <div class="form-group-small">
-                    <label class="form-label-small">DESCRIPTION:</label>
+                    <label class="form-label-small" for="new-tx-title"
+                        >DESCRIPTION:</label
+                    >
                     <input
                         type="text"
                         id="new-tx-title"
                         placeholder="e.g., Monthly Salary"
                         class="form-input-small"
+                        required
+                        aria-label="Descrição da transação"
                     />
                 </div>
 
                 <div class="form-row">
                     <div class="form-column">
-                        <label class="form-label-small">AMOUNT (USD):</label>
+                        <label class="form-label-small" for="new-tx-amount"
+                            >AMOUNT (USD):</label
+                        >
                         <input
                             type="number"
                             id="new-tx-amount"
                             step="0.01"
+                            min="0"
                             placeholder="0.00"
                             class="form-input-small"
+                            required
+                            aria-label="Valor da transação"
                         />
                     </div>
                     <div class="form-column">
-                        <label class="form-label-small">DATE:</label>
+                        <label class="form-label-small" for="new-tx-date"
+                            >DATE:</label
+                        >
                         <input
                             type="date"
                             id="new-tx-date"
                             class="form-input-small"
+                            required
+                            aria-label="Data da transação"
                         />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label-small">CATEGORY:</label>
-                    <select id="new-tx-category" class="form-select">
+                    <label class="form-label-small" for="new-tx-category"
+                        >CATEGORY:</label
+                    >
+                    <select
+                        id="new-tx-category"
+                        class="form-select"
+                        required
+                        aria-label="Categoria da transação"
+                    >
                         <option value="">Select a category</option>
                         <option value="Food">Food</option>
                         <option value="Utilities">Utilities</option>
@@ -287,18 +350,23 @@
                 <button
                     class="btn-add btn-add-fullwidth"
                     onclick="submitNewTransaction()"
+                    aria-label="Salvar nova transação"
                 >
                     Save Transaction
                 </button>
             </div>
         </div>
 
-        <!-- 4º Modal: Confirmação de Exclusão -->
+        <!-- MODAL 5: DELETE CONFIRMATION -->
         <div id="delete-confirmation-modal" class="modal-overlay modal-high-z">
             <div class="delete-modal-content">
                 <div class="delete-modal-header">
                     <span>Delete <span id="delete-item-type">Item</span>?</span>
-                    <button class="btn-close" onclick="closeDeleteModal()">
+                    <button
+                        class="btn-close"
+                        onclick="closeDeleteModal()"
+                        aria-label="Fechar modal"
+                    >
                         ×
                     </button>
                 </div>
@@ -312,22 +380,34 @@
                 </div>
 
                 <div class="delete-modal-buttons">
-                    <button class="btn-cancel" onclick="closeDeleteModal()">
+                    <button
+                        class="btn-cancel"
+                        onclick="closeDeleteModal()"
+                        aria-label="Cancelar exclusão"
+                    >
                         Cancel
                     </button>
-                    <button class="btn-delete" onclick="confirmDelete()">
+                    <button
+                        class="btn-delete"
+                        onclick="confirmDelete()"
+                        aria-label="Confirmar exclusão"
+                    >
                         Delete
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- 5º Modal: Mensagem de Erro -->
+        <!-- MODAL 6: ERROR MESSAGE -->
         <div id="error-modal" class="modal-overlay modal-high-z">
             <div class="error-modal-content">
                 <div class="error-modal-header">
                     <span>Error!</span>
-                    <button class="btn-close" onclick="closeErrorModal()">
+                    <button
+                        class="btn-close"
+                        onclick="closeErrorModal()"
+                        aria-label="Fechar modal"
+                    >
                         ×
                     </button>
                 </div>
@@ -337,7 +417,11 @@
                 </div>
 
                 <div class="error-modal-buttons">
-                    <button class="btn-ok" onclick="closeErrorModal()">
+                    <button
+                        class="btn-ok"
+                        onclick="closeErrorModal()"
+                        aria-label="Fechar mensagem de erro"
+                    >
                         OK
                     </button>
                 </div>

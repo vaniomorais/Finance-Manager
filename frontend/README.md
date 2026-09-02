@@ -36,7 +36,7 @@ O Finance Manager Frontend é uma aplicação web desenvolvida em HTML, CSS e Ja
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/finance-manager.git
+git clone https://github.com/vaniomorais/financemanager-frontend
 cd finance-manager/frontend
 ```
 

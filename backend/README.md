@@ -8,15 +8,15 @@ O Finance Manager Backend é uma aplicação desenvolvida em Flask que fornece e
 
 ## 🎯 Funcionalidades
 
-- ✅ Cadastra um novo usuário/membro da familia.
-- ✅ Cadastro de transações (receitas e despesas)
-- ✅ Consulta Todos os usuários/membros
-- ✅ Consulta todas as transações e balanço financeiro familiar
-- ✅ Consulta transações por user ID e seu balanço financeiro
-- ✅ Excluir usuários/membros
-- ✅ Excluir transações
-- ✅ Validação de dados com Pydantic
-- ✅ Documentação interativa com Swagger
+- Cadastra um novo usuário/membro da familia.
+- Cadastro de transações (receitas e despesas)
+- Consulta Todos os usuários/membros
+- Consulta todas as transações e balanço financeiro familiar
+- Consulta transações por user ID e seu balanço financeiro
+- Excluir usuários/membros
+- Excluir transações
+- Validação de dados com Pydantic
+- Documentação interativa com Swagger
 
 ## 🛠️ Tecnologias
 
@@ -61,7 +61,7 @@ python app.py
 
 A API estará disponível em `http://localhost:5000`
 
-## 🚀 Uso
+## Uso
 
 ### Acessar a Documentação Swagger
 
@@ -109,7 +109,7 @@ curl -X POST http://localhost:5000/transactions \
   }'
 ```
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 backend/

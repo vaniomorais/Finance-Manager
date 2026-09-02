@@ -6,25 +6,25 @@ Interface web para gerenciamento de finanças pessoais e familiares.
 
 O Finance Manager Frontend é uma aplicação web desenvolvida em HTML, CSS e JavaScript vanilla, para gerenciamento finaceiro pessoal e/ou familiar. Permite gerenciar membros da família e o controle de gastos de cada um, com o registro das receitas e despesas, apurando a situação financeira (superavit ou deficit) de cada membro bem como do grupo familiar.
 
-## 🎯 Funcionalidades
+## Funcionalidades
 
-- ✅ Visualização de membros da família
-- ✅ Adição e remoção de membros
-- ✅ Registro de transações (receitas e despesas)
-- ✅ Visualização de transações por membro
-- ✅ Cálculo automático de saldos
-- ✅ Interface intuitiva
-- ✅ Cards Modais para interações principais
-- ✅ Validação de dados.
+- Visualização de membros da família
+- Adição e remoção de membros
+- Registro de transações (receitas e despesas)
+- Visualização de transações por membro
+- Cálculo automático de saldos
+- Interface intuitiva
+- Cards Modais para interações principais
+- Validação de dados.
 
-## 🛠️ Tecnologias
+## Tecnologias
 
 - **HTML5** - Estrutura semântica
 - **CSS3** - Estilos
 - **JavaScript (Vanilla)** - Interatividade
 - **Fetch API** - Comunicação com backend
 
-## 📦 Instalação
+## Instalação
 
 ### Pré-requisitos
 
@@ -42,14 +42,14 @@ cd finance-manager/frontend
 
 2. **Inicie um servidor local** (escolha uma opção)
 
-**Opção 1: Usando Python (recomendado)**
-```bash
-python app.py
-```
+  **Opção 1: Usando Python (recomendado)**
+  ```bash
+  python app.py
+  ```
 
-**Opção 2: abrindo o arquivo 'index.html'**
+  **Opção 2: abrindo o arquivo 'index.html'**
 
-## 🚀 Como Usar
+## Como Usar
 
 ### 1. Gerenciar Membros
 - Na seção "Household Members", clique em "Add Member" para adicionar novos membros da família
@@ -71,7 +71,7 @@ python app.py
 - Acesse diretamente
 - URL: `http://localhost:5000/apidocs`
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 frontend/
@@ -91,7 +91,7 @@ Todos os estilos podem ser personalizados no arquivo `styles.css`. As cores prin
 }
 ```
 
-## 🔗 Integração com Backend
+## Integração com Backend
 
 O frontend se comunica com o backend através da API REST. Certifique-se de que:
 
@@ -99,7 +99,7 @@ O frontend se comunica com o backend através da API REST. Certifique-se de que:
 2. CORS está habilitado no backend (já configurado por padrão)
 3. O banco de dados do backend contém os dados
 
-## 🧪 Testes Manuais
+## Testes Manuais
 
 ### Fluxo Básico de Teste
 
@@ -110,7 +110,7 @@ O frontend se comunica com o backend através da API REST. Certifique-se de que:
 5. Verifique se o saldo foi atualizado corretamente
 6. Abra "Family Transactions" para visualizar as transações de todos os membros familiares
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Problema: "Erro ao conectar com a API"
 
@@ -128,8 +128,15 @@ O frontend se comunica com o backend através da API REST. Certifique-se de que:
 3. Limpe o cache do navegador (Ctrl+Shift+Delete)
 4. Verifique as requisições de rede no Developer Tools (F12 > Network)
 
-## 👨‍💻 Autor
+## Autor
 
 Desenvolvido como parte do MVP da sprint 01 da Pós-Graduação em Desenvolvimento Full Stack da PUC Rio.
 
 **Último update:** setembro de 2026
+
+## Prints
+![alt text](image.png)
+
+![alt text](image-1.png)
+
+![alt text](image-2.png)

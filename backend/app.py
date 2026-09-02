@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from werkzeug.exceptions import NotFound
 from models.models import db, User, Transaction
 from flasgger import Swagger
 from pydantic import ValidationError
@@ -166,8 +167,7 @@ def get_all_transactions():
         return jsonify({
             'summary': summary,
             'transactions': transactions_with_member,
-            'transaction_count': len(all_transactions)
-        }), 200
+            'transaction_count': len(all_transactions)}), 200
     
     except Exception as e:
         return jsonify({'error': f'Erro ao buscar transações: {str(e)}'}), 500
@@ -205,6 +205,8 @@ def get_user_transactions(user_id):
             'transactions': [t.to_dict() for t in user.transactions]
         }), 200
     
+    except NotFound:
+        return jsonify({'error': 'Usuário não encontrado'}), 404
     except Exception as e:
         return jsonify({'error': f'Erro ao buscar transações do usuário: {str(e)}'}), 500
 
@@ -281,6 +283,8 @@ def create_transaction(user_id):
     
     except ValidationError as e:
         return handle_validation_error(e)
+    except NotFound:
+        return jsonify({'error': 'Usuário não encontrado'}), 404
     except Exception as e:
         return jsonify({'error': f'Erro ao criar transação: {str(e)}'}), 500
 
@@ -310,6 +314,8 @@ def delete_user(user_id):
         db.session.delete(user)
         db.session.commit()
         return jsonify({'message': f'Usuário {user.name} deletado com sucesso'}), 200
+    except NotFound:
+        return jsonify({'error': 'Usuário não encontrado'}), 404
     except Exception as e:
         return jsonify({'error': f'Erro ao deletar usuário: {str(e)}'}), 500
 
@@ -339,6 +345,8 @@ def delete_transaction(tx_id):
         db.session.delete(transaction)
         db.session.commit()
         return jsonify({'message': f'Transação "{transaction.title}" deletada com sucesso'}), 200
+    except NotFound:
+        return jsonify({'error': 'Transação não encontrada'}), 404
     except Exception as e:
         return jsonify({'error': f'Erro ao deletar transação: {str(e)}'}), 500
 

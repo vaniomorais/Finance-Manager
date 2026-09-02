@@ -47,6 +47,7 @@ cd finance-manager/backend
 
 python -m venv venv
 venv\Scripts\activate
+```
 
 3. **Instale as dependências**
 ```bash

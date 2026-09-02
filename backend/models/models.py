@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, timezone, date
+from datetime import date
 
 db = SQLAlchemy()
     

@@ -38,7 +38,7 @@ O Finance Manager Backend é uma aplicação desenvolvida em Flask que fornece e
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/finance-manager.git
+git clone https://github.com/vaniomorais/financemanager-backend
 cd finance-manager/backend
 ```
 

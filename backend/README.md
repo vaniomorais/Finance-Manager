@@ -152,7 +152,7 @@ python app.py
 
 ## Autor
 
-Desenvolvido como parte do MVP da sprint 01 da da Pós-Graduação em Desenvolvimento Full Stack da PUC Rio.
+Desenvolvido como parte do MVP da sprint 01 da da Pós-Graduação em Desenvolvimento Full Stack.
 
 
 **Último update:** setembro de 2026

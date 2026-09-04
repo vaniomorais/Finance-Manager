@@ -1,4 +1,4 @@
-// Configuração da API
+// Configuração da URL da API (localhost)
 let API_URL = 'http://127.0.0.1:5000';
 
 

@@ -1,5 +1,3 @@
-// Gerencia interface do usuário para gestão de membros e transações
-
 // Configuração da API
 let API_URL = 'http://127.0.0.1:5000';
 
@@ -179,7 +177,7 @@ function updateUserList(users) {
     });
 }
 
-// Cria e retorna elemento HTML com linha de usuário
+// Cria as linhas da lista de usuários
 function createUserRow(user) {
     const row = document.createElement('div');
     row.className = 'user-row';
@@ -249,13 +247,13 @@ function updateUserTransactionModal(data, initials, avatarColor) {
 // Fecha modal de transações do usuário
 function closeModal() {
     setModalDisplay('transaction-modal', false);
-    // Atualiza a lista de usuários para refletir mudanças de saldo
+    // Atualiza a lista de usuários ao fechar
     fetchUsers();
 }
 
 // GERENCIAMENTO DE TRANSAÇÕES - TODAS AS TRANSAÇÕES
 
-// Abre modal com todas as transações de todos os usuários
+// Abre modal com a lista de todas as transações de todos os usuários
 async function openAllTransactionsModal() {
     try {
         const response = await fetch(`${API_URL}/transactions`);
@@ -287,7 +285,7 @@ function updateAllTransactionsModal(data) {
     updateTransactionListUI(data.transactions, 'all-tx-list', true);
 }
 
-// FUNÇÕES AUXILIARES - RENDERIZAÇÃO DE TRANSAÇÕES
+// FUNÇÕES AUXILIARES DE TRANSAÇÕES
 
 function updateTransactionListUI(transactions, containerId, showMemberName = false) {
     const txContainer = document.getElementById(containerId);
@@ -300,7 +298,7 @@ function updateTransactionListUI(transactions, containerId, showMemberName = fal
 }
 
 
-// Cria elemento HTML com linha de transação
+// Cria linhas da lista de transações
 function createTransactionRowElement(tx, showMemberName = false) {
     const isIncome = tx.type === TRANSACTION_TYPES.income;
     const iconClass = getTransactionIconClass(tx.type);
@@ -311,7 +309,6 @@ function createTransactionRowElement(tx, showMemberName = false) {
     const row = document.createElement('div');
     row.className = 'tx-row';
     
-    // Monta metadata: categoria + data, ou membro + categoria + data
     const metadata = showMemberName 
         ? `${tx.member_name} • ${tx.category} • ${tx.date}`
         : `${tx.category} • ${tx.date}`;
@@ -358,7 +355,7 @@ function closeDeleteModal() {
     setModalDisplay('delete-confirmation-modal', false);
 }
 
-// Confirma e executa a deleção de usuário ou transação
+// Confirmação da deleção de usuário ou transação
 async function confirmDelete() {
     const { id, isTransaction } = state.deleteItem;
     
@@ -388,9 +385,9 @@ async function confirmDelete() {
     }
 }
 
-// GERENCIAMENTO DE ADIÇÃO DE MEMBROS/USUÁRIOS
+// INCLUSÃO DE NOVOS USUÁRIOS
 
-// Abre modal para adicionar novo membro
+// Abre modal para adicionar novo usuário
 function openAddMemberModal() {
     document.getElementById('new-member-name').value = '';
     state.selectedColor = COLOR_ARRAY[0]; // Seleciona a primeira cor como padrão
@@ -398,12 +395,12 @@ function openAddMemberModal() {
     setModalDisplay('add-member-modal', true);
 }
 
-// Fecha modal de adição de membro
+// Fecha modal de adição de usuário
 function closeAddMemberModal() {
     setModalDisplay('add-member-modal', false);
 }
 
-// Envia novo membro para a API
+// Envia novo usuário para a API
 async function submitNewMember() {
     const nameInput = document.getElementById('new-member-name').value.trim();
     
@@ -442,13 +439,13 @@ async function submitNewMember() {
     }
 }
 
-// Define cor selecionada e atualiza UI
+// Define a cor selecionada
 function selectColor(color) {
     state.selectedColor = color;
     highlightSelectedColor(color);
 }
 
-// Destaca visualmente a cor selecionada
+// Destaca a cor selecionada
 function highlightSelectedColor(color) {
     const colorButtons = document.querySelectorAll('.color-option');
     colorButtons.forEach(btn => {
@@ -460,9 +457,9 @@ function highlightSelectedColor(color) {
     });
 }
 
-// GERENCIAMENTO DE ADIÇÃO DE TRANSAÇÕES
+// INCLUSÃO DE TRANSAÇÕES
 
-// Abre modal para adicionar nova transação
+// Abre modal adicionar nova transação
 function openAddTxModal() {
     document.getElementById('new-tx-title').value = '';
     document.getElementById('new-tx-amount').value = '';
@@ -476,12 +473,12 @@ function openAddTxModal() {
     setModalDisplay('add-tx-modal', true);
 }
 
-// Fecha modal de adição de transação
+// Fecha modal de adiçionar transação
 function closeAddTxModal() {
     setModalDisplay('add-tx-modal', false);
 }
 
-// Define tipo de transação selecionado e atualiza UI
+// Define tipo de transação selecionado
 function selectTransactionType(type) {
     document.getElementById('new-tx-type').value = type;
     

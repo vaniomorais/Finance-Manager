@@ -6,7 +6,7 @@ from flasgger import Swagger
 from pydantic import ValidationError
 from schemas import UserCreate, TransactionCreate
 
-# CONFIGURAÇÃO INICIAL
+# CONFIGURAÇÃO INICIAL DO APP E BANCO
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finance.db'

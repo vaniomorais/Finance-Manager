@@ -39,8 +39,8 @@ def calculate_summary(transactions):
     }
 
 
-def handle_validation_error(e):
-    # Converte erro de validação do Pydantic em resposta JSON estruturada.
+def validation_error(e):
+    # Converte erro de validação do Pydantic em resposta JSON.
 
     error_details = [{'field': err['loc'][0], 'message': err['msg']} for err in e.errors()]
     return jsonify({
@@ -131,7 +131,7 @@ def create_user():
         return jsonify(new_user.to_dict()), 201
     
     except ValidationError as e:
-        return handle_validation_error(e)
+        return validation_error(e)
     except Exception as e:
         return jsonify({'error': f'Erro ao criar usuário: {str(e)}'}), 500
 
@@ -282,7 +282,7 @@ def create_transaction(user_id):
         return jsonify(new_transaction.to_dict()), 201
     
     except ValidationError as e:
-        return handle_validation_error(e)
+        return validation_error(e)
     except NotFound:
         return jsonify({'error': 'Usuário não encontrado'}), 404
     except Exception as e:

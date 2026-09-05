@@ -1,0 +1,16 @@
+{
+  "avatar_color": "#63B3ED",
+  "initials": "TX",
+  "name": "Thais Xiaochi"
+}
+
+{
+  "amount": 1415.00,
+  "category": "Shopping",
+  "date": "2026-09-05",
+  "title": "Visit to the Mall",
+  "type": "expense"
+}
+
+
+

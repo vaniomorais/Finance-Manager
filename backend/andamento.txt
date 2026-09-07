@@ -15,5 +15,5 @@
     - Deploy
 
 
-    link de acesso documentação Swagger: http://localhost:5000/apidocs
-    http://localhost:5000/apidocs/#/
+    link de acesso documentação OpenAPI/Swagger: http://localhost:5000/docs
+    http://localhost:5000/docs/

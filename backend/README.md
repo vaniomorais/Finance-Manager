@@ -23,7 +23,7 @@ O Finance Manager Backend é uma aplicação desenvolvida em Flask que fornece e
 - **Flask** 2.3.3 - Framework web
 - **Flask-SQLAlchemy** 3.0.5 - ORM para banco de dados
 - **Flask-CORS** 4.0.0 - Suporte a CORS
-- **Flasgger** 0.9.7.1 - Documentação Swagger
+- **flask-swagger-ui** 4.11.1 - Interface Swagger UI para a especificação OpenAPI
 - **Pydantic** 2.13.4 - Validação de dados
 - **SQLite** - Banco de dados
 
@@ -63,14 +63,14 @@ A API estará disponível em `http://localhost:5000`
 
 ## Uso
 
-### Acessar a Documentação Swagger
+### Acessar a Documentação OpenAPI/Swagger
 
 Abra seu navegador e acesse:
 ```
-http://localhost:5000/apidocs
+http://localhost:5000/docs
 ```
 
-Ali você encontrará toda a documentação interativa dos endpoints e poderá testar cada um deles.
+Ali você encontrará a documentação interativa dos endpoints e poderá testá-los. A especificação OpenAPI está disponível diretamente em `http://localhost:5000/openapi.json`.
 
 ### Endpoints Principais
 

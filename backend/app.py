@@ -2,9 +2,10 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from werkzeug.exceptions import NotFound
 from models.models import db, User, Transaction
-from flasgger import Swagger
+from flask_swagger_ui import get_swaggerui_blueprint
 from pydantic import ValidationError
 from schemas import UserCreate, TransactionCreate
+from openapi_spec import openapi_spec
 
 # CONFIGURAÇÃO INICIAL DO APP E BANCO
 
@@ -12,17 +13,23 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finance.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-swagger_template = {
-    "info":{
-        "title": "Finance Manager API",
-        "Description": "Gerenciador de finanças pessoais e familiares",
-        "version": "1.0.9"
-    }    
-}
-
 CORS(app)
-swagger = Swagger(app, template=swagger_template)
 db.init_app(app)
+
+OPENAPI_URL = '/openapi.json'
+SWAGGER_URL = '/docs'
+
+swagger_ui = get_swaggerui_blueprint(
+  SWAGGER_URL,
+  OPENAPI_URL,
+  config={'app_name': 'Finance Manager API'}
+)
+app.register_blueprint(swagger_ui, url_prefix=SWAGGER_URL)
+
+
+@app.route(OPENAPI_URL, methods=['GET'])
+def get_openapi_spec():
+  return jsonify(openapi_spec)
 
 # CONSTANTES
 
@@ -61,17 +68,7 @@ def validation_error(e):
 
 @app.route('/users', methods=['GET'])
 def get_users():
-    """
-    Lista todos os usuários com seus saldos calculados.
-    ---
-    tags:
-      - Usuários
-    responses:
-      200:
-        description: Usuários carregados com sucesso
-      500:
-        description: Erro no servidor
-    """
+    #Lista todos os usuários com seus saldos calculados.
     try:
         users = User.query.all()
         users_data = []
@@ -92,37 +89,7 @@ def get_users():
 
 @app.route('/users', methods=['POST'])
 def create_user():
-    """
-    Cria um novo usuário com dados validados.
-    ---
-    tags:
-      - Usuários
-    parameters:
-      - name: body
-        in: body
-        schema:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Nome do usuário
-              required: true
-            initials:
-              type: string
-              description: Iniciais do nome
-              required: true
-            avatar_color:
-              type: string
-              description: Cor hexadecimal do avatar
-              required: true
-    responses:
-      201:
-        description: Usuário criado com sucesso
-      400:
-        description: Erro na validação dos dados
-      500:
-        description: Erro no servidor
-    """
+    #Cria um novo usuário com dados validados.
     try:
         data = request.get_json()
         user_data = UserCreate(**data)
@@ -148,17 +115,8 @@ def create_user():
 
 @app.route('/transactions', methods=['GET'])
 def get_all_transactions():
-    """
-    Retorna todas as transações do grupo familiar com resumo consolidado.
-    ---
-    tags:
-      - Transações
-    responses:
-      200:
-        description: Transações carregadas com sucesso
-      500:
-        description: Erro no servidor
-    """
+    
+    #Retorna todas as transações do grupo familiar com resumo consolidado.
     try:
         all_transactions = Transaction.query.all()
         
@@ -183,24 +141,7 @@ def get_all_transactions():
 
 @app.route('/users/<int:user_id>/transactions', methods=['GET'])
 def get_user_transactions(user_id):
-    """
-    Retorna as transações e resumo financeiro de um usuário específico.
-    ---
-    tags:
-      - Transações
-    parameters:
-      - name: user_id
-        in: path
-        type: integer
-        required: true
-    responses:
-      200:
-        description: Transações e resumo do usuário
-      404:
-        description: Usuário não encontrado
-      500:
-        description: Erro no servidor
-    """
+    #Retorna as transações e resumo financeiro de um usuário específico.
     try:
         user = User.query.get_or_404(user_id)
         
@@ -221,53 +162,7 @@ def get_user_transactions(user_id):
 
 @app.route('/users/<int:user_id>/transactions', methods=['POST'])
 def create_transaction(user_id):
-    """
-    Cria uma nova transação para um usuário específico.
-    ---
-    tags:
-      - Transações
-    parameters:
-      - name: user_id
-        in: path
-        type: integer
-        required: true
-      - name: body
-        in: body
-        schema:
-          type: object
-          properties:
-            title:
-              type: string
-              description: Título/descrição da transação
-              required: true
-            amount:
-              type: number
-              description: Valor da transação
-              required: true
-            type:
-              type: string
-              enum: ['income', 'expense']
-              description: Tipo da transação
-              required: true
-            category:
-              type: string
-              description: Categoria da transação
-              required: true
-            date:
-              type: string
-              format: date
-              description: Data da transação (YYYY-MM-DD)
-              required: true
-    responses:
-      201:
-        description: Transação criada com sucesso
-      400:
-        description: Erro na validação dos dados
-      404:
-        description: Usuário não encontrado
-      500:
-        description: Erro no servidor
-    """
+    #Cria uma nova transação para um usuário específico.
     try:
         user = User.query.get_or_404(user_id)
         data = request.get_json()
@@ -299,24 +194,7 @@ def create_transaction(user_id):
 
 @app.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
-    """
-    Deleta um usuário e todas as suas transações associadas.
-    ---
-    tags:
-      - Usuários
-    parameters:
-      - name: user_id
-        in: path
-        type: integer
-        required: true
-    responses:
-      200:
-        description: Usuário deletado com sucesso
-      404:
-        description: Usuário não encontrado
-      500:
-        description: Erro no servidor
-    """
+  # Deleta um usuário e todas as suas transações associadas.
     try:
         user = User.query.get_or_404(user_id)
         db.session.delete(user)
@@ -330,24 +208,7 @@ def delete_user(user_id):
 
 @app.route('/transactions/<int:tx_id>', methods=['DELETE'])
 def delete_transaction(tx_id):
-    """
-    Deleta uma transação específica.
-    ---
-    tags:
-      - Transações
-    parameters:
-      - name: tx_id
-        in: path
-        type: integer
-        required: true
-    responses:
-      200:
-        description: Transação deletada com sucesso
-      404:
-        description: Transação não encontrada
-      500:
-        description: Erro no servidor
-    """
+   # Deleta uma transação específica.
     try:
         transaction = Transaction.query.get_or_404(tx_id)
         db.session.delete(transaction)

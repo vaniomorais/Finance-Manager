@@ -69,7 +69,7 @@ cd finance-manager/frontend
 
 ### 4. Consultar Documentação da API
 - Acesse diretamente
-- URL: `http://localhost:5000/apidocs`
+- URL: `http://localhost:5000/docs`
 
 ## Estrutura do Projeto
 

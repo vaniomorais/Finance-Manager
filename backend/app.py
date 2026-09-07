@@ -12,8 +12,16 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finance.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+swagger_template = {
+    "info":{
+        "title": "Finance Manager API",
+        "Description": "Gerenciador de finanças pessoais e familiares",
+        "version": "1.0.9"
+    }    
+}
+
 CORS(app)
-swagger = Swagger(app)
+swagger = Swagger(app, template=swagger_template)
 db.init_app(app)
 
 # CONSTANTES
@@ -60,7 +68,7 @@ def get_users():
       - Usuários
     responses:
       200:
-        description: Lista de usuários com saldos
+        description: Usuários carregados com sucesso
       500:
         description: Erro no servidor
     """
@@ -147,7 +155,7 @@ def get_all_transactions():
       - Transações
     responses:
       200:
-        description: Todas as transações com balanço financeiro do grupo familiar
+        description: Transações carregadas com sucesso
       500:
         description: Erro no servidor
     """

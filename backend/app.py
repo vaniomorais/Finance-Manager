@@ -1,35 +1,35 @@
-from flask import Flask, jsonify, request
+from flask import jsonify, request
 from flask_cors import CORS
 from werkzeug.exceptions import NotFound
 from models.models import db, User, Transaction
-from flask_swagger_ui import get_swaggerui_blueprint
+from flask_openapi3 import OpenAPI, Info
 from pydantic import ValidationError
 from schemas import UserCreate, TransactionCreate
 from openapi_spec import openapi_spec
 
+info = Info(title="Finance Manager API", version="1.0.9", description="Gerenciador de finanças pessoais e familiares")
+app = OpenAPI(
+    __name__,
+    info=info,
+    doc_prefix='/docs',
+    doc_url='/openapi.json'
+)
+
 # CONFIGURAÇÃO INICIAL DO APP E BANCO
 
-app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finance.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 CORS(app)
 db.init_app(app)
 
-OPENAPI_URL = '/openapi.json'
-SWAGGER_URL = '/docs'
 
-swagger_ui = get_swaggerui_blueprint(
-  SWAGGER_URL,
-  OPENAPI_URL,
-  config={'app_name': 'Finance Manager API'}
-)
-app.register_blueprint(swagger_ui, url_prefix=SWAGGER_URL)
+@app.route('/openapi.json')
+def openapi_json():
+    return jsonify(openapi_spec)
 
-
-@app.route(OPENAPI_URL, methods=['GET'])
-def get_openapi_spec():
-  return jsonify(openapi_spec)
+# Use the complete project specification in the built-in Swagger UI.
+app.view_functions['openapi.doc_url'] = lambda: jsonify(openapi_spec)
 
 # CONSTANTES
 
@@ -68,7 +68,6 @@ def validation_error(e):
 
 @app.route('/users', methods=['GET'])
 def get_users():
-    #Lista todos os usuários com seus saldos calculados.
     try:
         users = User.query.all()
         users_data = []
@@ -89,7 +88,6 @@ def get_users():
 
 @app.route('/users', methods=['POST'])
 def create_user():
-    #Cria um novo usuário com dados validados.
     try:
         data = request.get_json()
         user_data = UserCreate(**data)
@@ -115,8 +113,6 @@ def create_user():
 
 @app.route('/transactions', methods=['GET'])
 def get_all_transactions():
-    
-    #Retorna todas as transações do grupo familiar com resumo consolidado.
     try:
         all_transactions = Transaction.query.all()
         
@@ -141,7 +137,6 @@ def get_all_transactions():
 
 @app.route('/users/<int:user_id>/transactions', methods=['GET'])
 def get_user_transactions(user_id):
-    #Retorna as transações e resumo financeiro de um usuário específico.
     try:
         user = User.query.get_or_404(user_id)
         
@@ -162,7 +157,6 @@ def get_user_transactions(user_id):
 
 @app.route('/users/<int:user_id>/transactions', methods=['POST'])
 def create_transaction(user_id):
-    #Cria uma nova transação para um usuário específico.
     try:
         user = User.query.get_or_404(user_id)
         data = request.get_json()
@@ -194,7 +188,6 @@ def create_transaction(user_id):
 
 @app.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
-  # Deleta um usuário e todas as suas transações associadas.
     try:
         user = User.query.get_or_404(user_id)
         db.session.delete(user)
@@ -208,7 +201,6 @@ def delete_user(user_id):
 
 @app.route('/transactions/<int:tx_id>', methods=['DELETE'])
 def delete_transaction(tx_id):
-   # Deleta uma transação específica.
     try:
         transaction = Transaction.query.get_or_404(tx_id)
         db.session.delete(transaction)

@@ -54,7 +54,7 @@ cd finance-manager/frontend
 ### 1. Gerenciar Membros
 - Na seção "Household Members", clique em "Add Member" para adicionar novos membros da família
 - Cada membro possui um saldo que é atualizado automaticamente com as transações
-- Remova membros clicando no botão de deletar
+- Remova membros clicando no botão de deletar (lixeira)
 
 ### 2. Registrar Transações
 - Clique no nome de um membro familiar e em "Add Transaction" para abrir o modal "New Transaction"

@@ -12,7 +12,7 @@ O Finance Manager Backend é uma aplicação desenvolvida em Flask que fornece e
 - Cadastro de transações (receitas e despesas)
 - Consulta Todos os usuários/membros
 - Consulta todas as transações e balanço financeiro familiar
-- Consulta transações por user ID e seu balanço financeiro
+- Consulta transações por user ID de usuário
 - Excluir usuários/membros
 - Excluir transações
 - Validação de dados com Pydantic
@@ -70,7 +70,8 @@ Abra seu navegador e acesse:
 http://localhost:5000/docs
 ```
 
-Ali você encontrará a documentação interativa dos endpoints e poderá testá-los. A especificação OpenAPI está disponível diretamente em `http://localhost:5000/openapi.json`.
+A especificação OpenAPI está disponível diretamente em:
+`http://localhost:5000/openapi.json`.
 
 ### Endpoints Principais
 

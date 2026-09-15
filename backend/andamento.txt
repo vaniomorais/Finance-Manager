@@ -9,8 +9,8 @@
 
     - Criar arquivos README para o back e o front, com instruções de uso/instalação - Feito
     - Estruturar os repositórios no Git - Feito
-    - Vídeo de apresentação
-    - Revisar se todos os requisitos foram atendidos
+    - Vídeo de apresentação - Feito
+    - Revisar se todos os requisitos foram atendidos - Feito
 
     - Deploy
 

@@ -35,7 +35,7 @@ openapi_spec = {
     'tags': [{'name': 'Usuários'}, {'name': 'Transações'}],
     'paths': {
         '/users': {
-            'get': operation('Usuários', 'Lista usuários', {
+            'get': operation('Usuários', 'Retorna uma lista de todos os usuários', {
                 '200': json_response('OK', {'type': 'array', 'items': ref('User')}), '500': server_error
             }),
             'post': operation('Usuários', 'Cria um novo usuário', {
@@ -43,13 +43,13 @@ openapi_spec = {
             }, 'UserCreate')
         },
         '/transactions': {
-            'get': operation('Transações', 'Lista todas as transações e resumo', {
+            'get': operation('Transações', 'Retorna uma lista de todas as transações e resumo financeiro', {
                 '200': json_response('OK', ref('TransactionList')), '500': server_error
             })
         },
         '/users/{user_id}/transactions': {
             **path_parameter('user_id'),
-            'get': operation('Transações', 'Lista transações por ID de usuário', {
+            'get': operation('Transações', 'Retorna uma lista de transações por ID de usuário', {
                 '200': json_response('OK', ref('UserTransactionList')), '404': not_found, '500': server_error
             }),
             'post': operation('Transações', 'Cadastra nova transação para o usuário', {

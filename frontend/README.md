@@ -1,6 +1,6 @@
 # Finance Manager - Frontend
 
-Interface web para gerenciamento de finanças pessoais e familiares.
+Interface web da API para gerenciamento de finanças pessoais e familiares.
 
 ## 📋 Sobre
 
@@ -28,7 +28,7 @@ O Finance Manager Frontend é uma aplicação web desenvolvida em HTML, CSS e Ja
 
 ### Pré-requisitos
 
-- Navegador web moderno (Chrome, Firefox, Safari, Edge)
+- Navegador web (Chrome, Firefox, Safari, Edge, etc)
 - Backend do Finance Manager rodando em `http://localhost:5000`
 - Python 3.8+ (para executar o servidor local)
 
@@ -40,7 +40,7 @@ git clone https://github.com/vaniomorais/financemanager-frontend
 cd finance-manager/frontend
 ```
 
-2. **Inicie o servidor local do backend, servidor da aplicação** (escolha uma opção)
+2. **Inicie o servidor local do backend, servidor da aplicação**
 
   **No terminal, abra o arquivo app.py**
   ```bash
@@ -81,23 +81,12 @@ frontend/
 └── README.md           # Este arquivo
 ```
 
-Todos os estilos podem ser personalizados no arquivo `styles.css`. As cores principais são definidas no início do arquivo como variáveis CSS:
-
-```css
-:root {
-  --primary-color: #6366f1;
-  --secondary-color: #ec4899;
-  /* ... outras cores */
-}
-```
-
 ## Integração com Backend
 
 O frontend se comunica com o backend através da API REST. Certifique-se de que:
 
 1. O backend está rodando em `http://localhost:5000`
 2. CORS está habilitado no backend (já configurado por padrão)
-3. O banco de dados do backend contém os dados
 
 ## Testes Manuais
 

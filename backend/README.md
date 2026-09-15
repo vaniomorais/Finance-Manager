@@ -127,18 +127,6 @@ backend/
 └── README.md             # Este arquivo
 ```
 
-## Configuração
-
-### Variáveis de Ambiente
-
-Você pode criar um arquivo `.env` para configurar a aplicação:
-
-```env
-FLASK_ENV=development
-FLASK_DEBUG=True
-DATABASE_URI=sqlite:///finance.db
-```
-
 ### Banco de Dados
 
 O banco de dados SQLite é criado automaticamente na primeira execução. Para resetar o banco:

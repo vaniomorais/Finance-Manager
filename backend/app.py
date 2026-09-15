@@ -68,6 +68,7 @@ def validation_error(e):
 
 @app.route('/users', methods=['GET'])
 def get_users():
+    # Consulta todos os usuários cadastrados.
     try:
         users = User.query.all()
         users_data = []
@@ -88,6 +89,7 @@ def get_users():
 
 @app.route('/users', methods=['POST'])
 def create_user():
+    # Cria um novo usuário a partir dos dados recebidos no corpo da requisição.
     try:
         data = request.get_json()
         user_data = UserCreate(**data)
@@ -108,11 +110,24 @@ def create_user():
     except Exception as e:
         return jsonify({'error': f'Erro ao criar usuário: {str(e)}'}), 500
 
+@app.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    # Deleta um usuário específico pelo ID.
+    try:
+        user = User.query.get_or_404(user_id)
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({'message': f'Usuário {user.name} deletado com sucesso'}), 200
+    except NotFound:
+        return jsonify({'error': 'Usuário não encontrado'}), 404
+    except Exception as e:
+        return jsonify({'error': f'Erro ao deletar usuário: {str(e)}'}), 500
 
 # ROTAS DA API - TRANSAÇÕES
 
 @app.route('/transactions', methods=['GET'])
 def get_all_transactions():
+    # Consulta todas as transações e retorna um resumo financeiro do grupo familiar.
     try:
         all_transactions = Transaction.query.all()
         
@@ -137,10 +152,10 @@ def get_all_transactions():
 
 @app.route('/users/<int:user_id>/transactions', methods=['GET'])
 def get_user_transactions(user_id):
+    # Consulta todas as transações de um usuário específico e seu resumo financeiro.
     try:
         user = User.query.get_or_404(user_id)
-        
-        # Calcula resumo usando função auxiliar
+                # Calcula resumo usando função auxiliar
         summary = calculate_summary(user.transactions)
         
         return jsonify({
@@ -157,6 +172,7 @@ def get_user_transactions(user_id):
 
 @app.route('/users/<int:user_id>/transactions', methods=['POST'])
 def create_transaction(user_id):
+    # Cria uma nova transação para um usuário específico.
     try:
         user = User.query.get_or_404(user_id)
         data = request.get_json()
@@ -185,22 +201,9 @@ def create_transaction(user_id):
     except Exception as e:
         return jsonify({'error': f'Erro ao criar transação: {str(e)}'}), 500
 
-
-@app.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    try:
-        user = User.query.get_or_404(user_id)
-        db.session.delete(user)
-        db.session.commit()
-        return jsonify({'message': f'Usuário {user.name} deletado com sucesso'}), 200
-    except NotFound:
-        return jsonify({'error': 'Usuário não encontrado'}), 404
-    except Exception as e:
-        return jsonify({'error': f'Erro ao deletar usuário: {str(e)}'}), 500
-
-
 @app.route('/transactions/<int:tx_id>', methods=['DELETE'])
 def delete_transaction(tx_id):
+    # Deleta uma transação específica pelo ID.
     try:
         transaction = Transaction.query.get_or_404(tx_id)
         db.session.delete(transaction)

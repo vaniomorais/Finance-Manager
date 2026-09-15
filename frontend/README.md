@@ -40,14 +40,14 @@ git clone https://github.com/vaniomorais/financemanager-frontend
 cd finance-manager/frontend
 ```
 
-2. **Inicie um servidor local** (escolha uma opção)
+2. **Inicie o servidor local do backend, servidor da aplicação** (escolha uma opção)
 
-  **Opção 1: Usando Python (recomendado)**
+  **No terminal, abra o arquivo app.py**
   ```bash
   python app.py
   ```
 
-  **Opção 2: abrindo o arquivo 'index.html'**
+3. **Abra o arquivo 'index.html'**
 
 ## Como Usar
 
